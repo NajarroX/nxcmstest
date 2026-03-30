@@ -41,14 +41,28 @@
         const API = "https://script.google.com/macros/s/AKfycbykA2Qhx3TIxybnu-jOF-hLq6ApD7HDC8LW7MbqpHGkT09LxO6JaACYHvETlLFZscecAQ/exec";
         let config, services = [], selected = [], total = 0;
 
-        async function load() {
-            const res = await fetch(API);
-            const data = await res.json();
-            config = data.config; services = data.services;
-            
-            render(data);
-            document.getElementById('loader').classList.add('hidden');
-            AOS.init();
+       async function load() {
+            try {
+                const res = await fetch(API, {
+                    method: 'GET',
+                    mode: 'cors', // Forzamos modo CORS
+                    redirect: 'follow' // MUY IMPORTANTE para Google Scripts
+                });
+                
+                if (!res.ok) throw new Error('Error en la red');
+                
+                const data = await res.json();
+                config = data.config; 
+                services = data.services;
+                
+                render(data);
+                document.getElementById('loader').classList.add('hidden');
+                AOS.init();
+            } catch (error) {
+                console.error("Error cargando datos:", error);
+                // Si falla, al menos quitamos el loader para ver qué pasa
+                document.getElementById('loader').innerHTML = "<p class='p-5 text-red-500'>Error de conexión con el servidor de Google.</p>";
+            }
         }
 
         function render(data) {
