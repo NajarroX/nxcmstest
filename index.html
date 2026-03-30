@@ -7,148 +7,175 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        :root { --p: #0066FF; --bg: #ffffff; }
-        .bg-primary { background-color: var(--p); }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        :root { --p: #000000; }
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.5s ease; }
         .text-primary { color: var(--p); }
+        .bg-primary { background-color: var(--p); }
         .border-primary { border-color: var(--p); }
-        body { background-color: var(--bg); }
-        #loader { transition: all 0.5s ease; }
-        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
+        .loader-screen { transition: opacity 0.8s ease, visibility 0.8s; }
     </style>
 </head>
-<body class="text-gray-900 font-sans scroll-smooth">
+<body class="bg-white text-black overflow-x-hidden">
 
-    <div id="loader" class="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-white">
-        <div class="w-10 h-10 border-4 border-gray-200 border-t-primary rounded-full animate-spin"></div>
+    <div id="loader" class="fixed inset-0 z-[99] bg-white flex flex-col items-center justify-center loader-screen">
+        <div class="w-12 h-12 border-4 border-gray-100 border-t-black rounded-full animate-spin mb-4"></div>
+        <p class="text-[10px] font-black uppercase tracking-[0.4em] animate-pulse">Sincronizando Estudio...</p>
     </div>
 
-    <nav class="fixed top-0 w-full z-50 glass border-b border-gray-100">
-        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-            <span id="nav-brand" class="font-black text-2xl tracking-tighter uppercase">NAJARRO X</span>
-            <div class="hidden md:flex gap-8 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">
-                <a href="#hero" class="hover:text-primary transition">Inicio</a>
-                <a href="#portfolio" class="hover:text-primary transition">Proyectos</a>
-                <a href="#cotizador" class="hover:text-primary transition">Cotizar</a>
-            </div>
-            <a id="nav-wa" href="#" target="_blank" class="bg-primary text-white px-6 py-3 rounded-full text-xs font-bold shadow-lg hover:brightness-110 transition">WHATSAPP</a>
+    <nav class="fixed w-full z-40 mix-blend-difference py-8 px-6 md:px-12 flex justify-between items-center">
+        <div class="flex items-center gap-4">
+            <img id="logo" src="" class="h-8 hidden" alt="Logo">
+            <span id="nav-brand" class="text-white font-black text-2xl tracking-tighter italic uppercase"></span>
         </div>
+        <button onclick="enviarWhatsApp()" class="bg-white text-black px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest hover:scale-105 transition">Cotizar Proyecto</button>
     </nav>
 
-    <section id="hero" class="min-h-screen flex items-center justify-center px-6 pt-20">
-        <div class="max-w-4xl mx-auto text-center" data-aos="fade-up">
-            <img id="logo" src="" class="h-20 mx-auto mb-10 hidden">
-            <h1 id="hero-title" class="text-6xl md:text-8xl font-black mb-6 tracking-tight leading-none"></h1>
-            <p id="hero-subtitle" class="text-xl text-gray-500 mb-12 max-w-2xl mx-auto leading-relaxed"></p>
-            <a href="#cotizador" id="hero-cta" class="inline-block bg-primary text-white px-10 py-5 rounded-2xl font-bold text-lg shadow-2xl hover:scale-105 transition-transform"></a>
+    <section class="relative min-h-screen flex items-center px-6 md:px-12 pt-24">
+        <div class="max-w-5xl" data-aos="fade-right">
+            <h1 id="hero-title" class="text-6xl md:text-[8rem] font-[900] leading-[0.85] tracking-tighter italic uppercase mb-8"></h1>
+            <p id="hero-subtitle" class="text-xl md:text-3xl text-gray-500 max-w-2xl mb-12 font-medium leading-tight"></p>
+            <button id="hero-cta" onclick="document.getElementById('cotizador').scrollIntoView({behavior:'smooth'})" 
+                    class="bg-primary text-white px-12 py-6 rounded-2xl font-black text-xl italic uppercase tracking-tighter hover:brightness-125 transition shadow-2xl"></button>
         </div>
     </section>
 
-    <section id="portfolio" class="py-32 bg-gray-50 px-6">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-4xl font-black mb-16 text-center tracking-tight">PORTAFOLIO SELECCIONADO</h2>
-            <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"></div>
-        </div>
-    </section>
-
-    <section id="cotizador" class="py-32 px-6">
-        <div class="max-w-3xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-5xl font-black mb-4 tracking-tight uppercase">Cotizador Online</h2>
-                <p class="text-gray-400 font-medium">Personaliza tu paquete y obtén un estimado al instante.</p>
+    <section class="py-24 px-6 md:px-12 bg-gray-50 rounded-[4rem] mx-2 md:mx-6">
+        <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             </div>
-            
-            <div id="services-list" class="space-y-4 mb-12"></div>
+    </section>
 
-            <div class="bg-gray-900 rounded-[2.5rem] p-10 text-center text-white shadow-2xl">
-                <p class="text-gray-400 uppercase text-xs font-black tracking-widest mb-2">Inversión Estimada</p>
-                <div id="total-price" class="text-6xl font-black mb-8 text-primary">$0.00</div>
-                <button onclick="enviarWhatsApp()" class="w-full bg-primary py-5 rounded-2xl font-black text-xl hover:scale-[1.02] transition">SOLICITAR PROYECTO</button>
+    <section id="cotizador" class="py-32 px-6 md:px-12 max-w-6xl mx-auto">
+        <div class="text-center mb-20">
+            <h2 class="text-5xl md:text-7xl font-black italic uppercase tracking-tighter mb-4">Cotizador Digital</h2>
+            <p class="text-gray-400 font-bold uppercase tracking-widest text-sm">Selecciona los servicios para tu proyecto</p>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-12 items-start">
+            <div id="services-list" class="lg:col-span-2 space-y-4">
+                </div>
+
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-gray-100 sticky top-32">
+                <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Inversión Estimada</p>
+                <div id="total-price" class="text-6xl font-black italic mb-8">$0.00</div>
+                <button onclick="enviarWhatsApp()" class="w-full bg-primary text-white py-6 rounded-2xl font-black text-lg uppercase italic tracking-tighter shadow-xl hover:brightness-110 transition">
+                    Enviar a WhatsApp
+                </button>
             </div>
         </div>
     </section>
+
+    <footer class="py-20 text-center border-t border-gray-100">
+        <p class="text-gray-300 font-black text-xs uppercase tracking-[0.5em]">Najarro X Estudio © 2026</p>
+    </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // UBICACIÓN DE TU URL (REEMPLAZAR AQUÍ)
-        const API_URL = 'https://script.google.com/macros/s/AKfycbxBMVc3vtnKsQx1VoaEEZk1HJqICxcznUnCulgHN6ErVUiWUychlvxCw1Yy7ROkbglzMw/exec'; 
-        
-        let config = {};
-        let total = 0;
-        let seleccionados = [];
+        // --- CAMBIA ESTA URL POR LA TUYA ---
+        const API_URL = 'https://script.google.com/macros/s/AKfycbyZl4BAk3XJ3rC2HF2q71zlxVwJjcJzgYhqTiJwlz9g_iM0TIB90cL8bd-IuWs1MXiY5g/exec';
+
+        let globalConfig = {};
+        let totalAcumulado = 0;
+        let listaServicios = [];
 
         async function init() {
             try {
-                const response = await fetch(API_URL + "?t=" + Date.now());
-                const data = await res.json();
-                config = data.config;
+                // Fetch con Cache Breaker
+                const resServidor = await fetch(API_URL + '?t=' + Date.now());
+                const data = await resServidor.json();
 
-                // Aplicar Configuración
-                document.documentElement.style.setProperty('--p', config.color_primario || '#0066FF');
-                document.documentElement.style.setProperty('--bg', config.bg_body || '#ffffff');
-                document.title = config.nombre_negocio;
-                document.getElementById('nav-brand').innerText = config.nombre_negocio;
-                if(config.logo_url) {
-                    document.getElementById('logo').src = config.logo_url;
-                    document.getElementById('logo').classList.remove('hidden');
+                if (data.error) throw new Error(data.error);
+
+                globalConfig = data.config;
+
+                // 1. Identidad Visual
+                const marca = globalConfig.nombre_negocio || "Najarro X";
+                document.title = marca;
+                document.getElementById('nav-brand').innerText = marca;
+                document.documentElement.style.setProperty('--p', globalConfig.color_primario || '#000000');
+                if(globalConfig.bg_body) document.body.style.backgroundColor = globalConfig.bg_body;
+
+                if(globalConfig.logo_url) {
+                    const logo = document.getElementById('logo');
+                    logo.src = globalConfig.logo_url;
+                    logo.classList.remove('hidden');
                 }
 
-                // Render Hero
-                const hero = data.content.find(c => c.Seccion_ID === 'hero');
-                document.getElementById('hero-title').innerText = hero.Titulo;
-                document.getElementById('hero-subtitle').innerText = hero.Subtitulo;
-                document.getElementById('hero-cta').innerText = hero.CTA_Texto;
+                // 2. Hero Content
+                const hero = data.content.find(c => c.Seccion_ID && c.Seccion_ID.toString().toLowerCase() === 'hero');
+                if(hero) {
+                    document.getElementById('hero-title').innerText = hero.Titulo || '';
+                    document.getElementById('hero-subtitle').innerText = hero.Subtitulo || '';
+                    document.getElementById('hero-cta').innerText = hero.CTA_Texto || 'Cotizar Ahora';
+                }
 
-                // Render Galería
-                const grid = document.getElementById('gallery-grid');
-                data.gallery.forEach(item => {
-                    grid.innerHTML += `
-                        <div class="group relative overflow-hidden rounded-[2rem] bg-white shadow-xl" data-aos="fade-up">
-                            <img src="${item.URL}" class="w-full h-80 object-cover group-hover:scale-110 transition duration-700">
-                            <div class="p-8">
-                                <h3 class="font-bold text-xl mb-1">${item.Titulo}</h3>
-                                <p class="text-gray-400 text-sm font-medium">${item.Descripcion}</p>
-                            </div>
-                        </div>`;
-                });
-
-                // Render Cotizador
-                const list = document.getElementById('services-list');
-                data.services.filter(s => s.Activo === true || s.Activo === "TRUE").forEach(s => {
-                    list.innerHTML += `
-                        <label class="flex items-center justify-between p-6 rounded-2xl border-2 border-gray-100 hover:border-primary cursor-pointer transition group">
-                            <div class="flex items-center gap-4">
-                                <input type="checkbox" class="w-6 h-6 rounded-full border-gray-300 text-primary focus:ring-primary" 
-                                       onchange="calc(this, ${s.Precio_Base}, '${s.Servicio}')">
-                                <div>
-                                    <p class="font-bold text-lg group-hover:text-primary transition">${s.Servicio}</p>
-                                    <p class="text-gray-400 text-sm">${s.Descripcion}</p>
+                // 3. Galería
+                const galGrid = document.getElementById('gallery-grid');
+                if(data.gallery) {
+                    data.gallery.forEach(item => {
+                        galGrid.innerHTML += `
+                            <div class="group relative overflow-hidden rounded-[2rem] bg-white shadow-xl" data-aos="fade-up">
+                                <img src="${item.URL}" class="w-full h-80 object-cover group-hover:scale-110 transition duration-700">
+                                <div class="p-8">
+                                    <h3 class="font-bold text-xl mb-1">${item.Titulo}</h3>
+                                    <p class="text-gray-400 text-sm font-medium uppercase tracking-widest">${item.Descripcion}</p>
                                 </div>
-                            </div>
-                            <span class="font-black text-xl">$${s.Precio_Base}</span>
-                        </label>`;
-                });
+                            </div>`;
+                    });
+                }
 
-                document.getElementById('loader').classList.add('opacity-0', 'pointer-events-none');
+                // 4. Cotizador
+                const sList = document.getElementById('services-list');
+                if(data.services) {
+                    data.services.forEach(s => {
+                        const activo = String(s.Activo).toUpperCase() === "TRUE";
+                        if(activo) {
+                            sList.innerHTML += `
+                                <label class="flex items-center justify-between p-6 rounded-3xl border-2 border-gray-100 hover:border-primary cursor-pointer transition group bg-white shadow-sm hover:shadow-xl">
+                                    <div class="flex items-center gap-6">
+                                        <input type="checkbox" class="w-8 h-8 rounded-full border-gray-200 text-primary focus:ring-primary" 
+                                               onchange="calc(this, ${s.Precio_Base}, '${s.Servicio}')">
+                                        <div>
+                                            <p class="font-black text-xl group-hover:text-primary transition uppercase italic tracking-tighter">${s.Servicio}</p>
+                                            <p class="text-gray-400 text-sm font-medium">${s.Descripcion}</p>
+                                        </div>
+                                    </div>
+                                    <span class="font-black text-2xl italic tracking-tighter">$${s.Precio_Base}</span>
+                                </label>`;
+                        }
+                    });
+                }
+
+                // Quitar Loader
+                const ldr = document.getElementById('loader');
+                ldr.classList.add('opacity-0');
+                setTimeout(() => ldr.remove(), 800);
+                
                 AOS.init({ duration: 1000, once: true });
 
-            } catch (e) { console.error(e); }
+            } catch (err) {
+                console.error("Error en Init:", err);
+                // Si falla el fetch, ocultamos el loader para ver la consola
+                document.getElementById('loader').innerHTML = `<p class="text-red-500 font-bold p-10">Error de conexión con Sheets: ${err.message}</p>`;
+            }
         }
 
         function calc(cb, precio, nombre) {
             if(cb.checked) {
-                total += precio;
-                seleccionados.push(nombre);
+                totalAcumulado += parseFloat(precio);
+                listaServicios.push(nombre);
             } else {
-                total -= precio;
-                seleccionados = seleccionados.filter(n => n !== nombre);
+                totalAcumulado -= parseFloat(precio);
+                listaServicios = listaServicios.filter(n => n !== nombre);
             }
-            document.getElementById('total-price').innerText = `$${total.toFixed(2)}`;
+            document.getElementById('total-price').innerText = `$${totalAcumulado.toFixed(2)}`;
         }
 
         function enviarWhatsApp() {
-            if(total === 0) return alert("Por favor selecciona al menos un servicio.");
-            const msg = encodeURIComponent(`¡Hola! Me interesa cotizar:\n\n${seleccionados.map(s => "✅ " + s).join("\n")}\n\nTotal estimado: $${total.toFixed(2)}`);
-            window.open(`https://wa.me/${config.whatsapp_tel}?text=${msg}`, '_blank');
+            if(totalAcumulado === 0) return alert("Selecciona al menos un servicio.");
+            const t = globalConfig.whatsapp_tel || "507";
+            const m = encodeURIComponent(`¡Hola! Me interesa cotizar en ${globalConfig.nombre_negocio}:\n\n${listaServicios.map(s => "✅ " + s).join("\n")}\n\nTotal estimado: $${totalAcumulado.toFixed(2)}`);
+            window.open(`https://wa.me/${t}?text=${m}`, '_blank');
         }
 
         init();
