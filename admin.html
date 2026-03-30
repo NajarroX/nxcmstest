@@ -2,183 +2,153 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel | Najarro X</title>
+    <title>Studio Manager | Najarro X</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .active-tab { border-bottom: 4px solid #000; color: #000; }
+        body { font-family: 'Inter', sans-serif; background: #f9fafb; }
+        .tab-btn.active { border-bottom: 4px solid #000; color: #000; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        input:focus, textarea:focus { outline: 2px solid #000; border-color: transparent; }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-
-    <div class="max-w-4xl mx-auto py-12 px-6">
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
+<body class="p-6">
+    <div class="max-w-5xl mx-auto">
+        <header class="mb-10 flex justify-between items-end">
             <div>
-                <h1 class="text-4xl font-[900] tracking-tighter italic uppercase text-black">CMS Studio</h1>
-                <p class="text-gray-400 text-sm font-medium">Panel de gestión para Najarro X Estudio.</p>
+                <h1 class="text-4xl font-black italic uppercase tracking-tighter">Studio Manager</h1>
             </div>
-            <div class="flex gap-3">
-                <a href="https://docs.google.com/spreadsheets/d/1fHmYmo4siQcNUx8-1WEoBgAUwKLwTNo1FwMlgsXdZPE/edit" target="_blank" class="bg-white px-5 py-2.5 rounded-xl text-xs font-bold border shadow-sm hover:bg-gray-100 transition">DATOS REALES (SHEET)</a>
-            </div>
+            <button onclick="saveAll()" id="save-master" class="bg-black text-white px-10 py-4 rounded-2xl font-bold hover:scale-105 transition shadow-xl">GUARDAR CAMBIOS</button>
         </header>
 
-        <div class="flex gap-8 border-b border-gray-200 mb-10 text-gray-400 font-black text-xs uppercase tracking-[0.2em]">
-            <button onclick="switchTab('design')" id="tab-design" class="pb-4 active-tab transition-all">Diseño Visual</button>
-            <button onclick="switchTab('content')" id="tab-content" class="pb-4 transition-all">Textos Web</button>
-            <button onclick="switchTab('services')" id="tab-services" class="pb-4 transition-all">Configuración</button>
+        <div class="flex gap-8 border-b mb-10 text-gray-400 font-bold text-xs uppercase tracking-widest">
+            <button onclick="showTab('general')" class="tab-btn pb-4 active" id="btn-general">General & Hero</button>
+            <button onclick="showTab('galeria')" class="tab-btn pb-4" id="btn-galeria">Portafolio</button>
+            <button onclick="showTab('servicios')" class="tab-btn pb-4" id="btn-servicios">Servicios</button>
         </div>
 
-        <div id="panel-loader" class="text-center py-24 bg-white rounded-[2rem] shadow-sm border border-gray-100">
-            <div class="w-8 h-8 border-4 border-gray-100 border-t-black rounded-full animate-spin mx-auto mb-4"></div>
-            <p class="text-gray-400 font-bold text-sm tracking-widest uppercase">Conectando con la nube...</p>
-        </div>
-
-        <form id="admin-form" class="hidden space-y-8">
-            
-            <div id="content-design" class="tab-content active space-y-8 bg-white p-10 rounded-[2.5rem] shadow-sm border border-gray-100">
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="space-y-2">
-                        <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400">Nombre de la Marca</label>
-                        <input type="text" name="nombre_negocio" placeholder="Ej: NAJARRO X" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl font-bold">
+        <form id="master-form">
+            <div id="tab-general" class="tab-content active space-y-6">
+                <div class="bg-white p-8 rounded-[2rem] shadow-sm border space-y-6">
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <input type="text" name="nombre_negocio" placeholder="Nombre Marca" class="p-4 bg-gray-50 rounded-xl border w-full">
+                        <input type="text" name="logo_url" placeholder="URL Logo" class="p-4 bg-gray-50 rounded-xl border w-full">
+                        <input type="color" name="color_primario" class="w-full h-14 p-2 bg-gray-50 rounded-xl border cursor-pointer">
                     </div>
-                    <div class="space-y-2">
-                        <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400">Color de Identidad</label>
-                        <input type="color" name="color_primario" class="w-full h-[58px] p-2 bg-gray-50 border border-gray-100 rounded-2xl cursor-pointer">
-                    </div>
-                    <div class="md:col-span-2 space-y-2">
-                        <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400">URL del Logo (Ruta de GitHub o link externo)</label>
-                        <input type="text" name="logo_url" placeholder="assets/img/logo.png" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <input type="text" name="hero_bg_url" placeholder="URL Imagen Fondo" class="p-4 bg-gray-50 rounded-xl border w-full">
+                        <input type="color" name="hero_text_color" class="w-full h-14 p-2 bg-gray-50 rounded-xl border cursor-pointer">
+                        <input type="text" name="hero_titulo" placeholder="Título Hero" class="p-4 bg-gray-50 rounded-xl border w-full md:col-span-2">
+                        <textarea name="hero_subtitulo" placeholder="Subtítulo Hero" class="p-4 bg-gray-50 rounded-xl border w-full md:col-span-2"></textarea>
+                        <input type="text" name="hero_cta" placeholder="Texto Botón (CTA)" class="p-4 bg-gray-50 rounded-xl border w-full md:col-span-2">
                     </div>
                 </div>
             </div>
 
-            <div id="content-content" class="tab-content space-y-8 bg-white p-10 rounded-[2.5rem] shadow-sm border border-gray-100">
-                <div class="space-y-2">
-                    <label class="block text-[10px] font-black uppercase tracking-widest text-blue-600">Título Principal (Hero)</label>
-                    <input type="text" name="hero_titulo" class="w-full p-5 bg-gray-50 border border-gray-100 rounded-2xl text-2xl font-black italic">
-                </div>
-                <div class="space-y-2">
-                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400">Subtítulo Descriptivo</label>
-                    <textarea name="hero_subtitulo" rows="4" class="w-full p-5 bg-gray-50 border border-gray-100 rounded-2xl leading-relaxed"></textarea>
-                </div>
-                <div class="space-y-2">
-                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400">Texto del Botón de Acción</label>
-                    <input type="text" name="hero_cta" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl font-bold">
-                </div>
+            <div id="tab-galeria" class="tab-content">
+                <div id="gallery-list" class="space-y-4"></div>
+                <button type="button" onclick="addItem('gallery')" class="mt-6 w-full border-2 border-dashed py-4 rounded-2xl font-bold text-gray-400 hover:bg-gray-50">+ Añadir Proyecto</button>
             </div>
 
-            <div id="content-services" class="tab-content space-y-8 bg-white p-10 rounded-[2.5rem] shadow-sm border border-gray-100">
-                <div class="space-y-2">
-                    <label class="block text-[10px] font-black uppercase tracking-widest text-green-600">Teléfono WhatsApp (Ej: 50760000000)</label>
-                    <input type="text" name="whatsapp_tel" class="w-full p-5 bg-gray-50 border border-gray-100 rounded-2xl text-xl font-bold">
-                    <p class="text-[10px] text-gray-400 italic">No incluyas el signo + ni espacios.</p>
-                </div>
+            <div id="tab-servicios" class="tab-content">
+                <div id="services-list" class="space-y-4"></div>
+                <button type="button" onclick="addItem('service')" class="mt-6 w-full border-2 border-dashed py-4 rounded-2xl font-bold text-gray-400 hover:bg-gray-50">+ Añadir Servicio</button>
             </div>
-
-            <button type="submit" id="save-btn" class="w-full bg-black text-white py-6 rounded-[2rem] font-black text-xl shadow-2xl hover:bg-gray-900 active:scale-[0.98] transition-all tracking-widest">
-                ACTUALIZAR SITIO WEB
-            </button>
         </form>
-
-        <footer class="mt-12 text-center">
-            <p class="text-gray-300 text-[10px] font-bold uppercase tracking-[0.3em]">Najarro X Estudio © 2026</p>
-        </footer>
     </div>
 
     <script>
-        // --- COLOCA TU URL AQUÍ ABAJO (ASEGÚRATE QUE SEA HTTPS) ---
         const API_URL = 'https://script.google.com/macros/s/AKfycbx6rNV8O3K_6-TAIvDe1fSNTHbjK7EdFhkxw7oLcupWEFGwPMDToDnJlYZDQitTo2CrEw/exec';
 
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('button[id^="tab-"]').forEach(b => b.classList.remove('active-tab'));
-            document.getElementById('content-' + tab).classList.add('active');
-            document.getElementById('tab-' + tab).classList.add('active-tab');
-        }
-
-        async function loadData() {
-            try {
-                // El timestamp (?t=) rompe el caché para que siempre cargue la info real
-                const res = await fetch(API_URL + '?t=' + new Date().getTime());
-                const data = await res.json();
-                const form = document.getElementById('admin-form');
-
-                // Llenar campos con validación de existencia
-                form.nombre_negocio.value = data.config.nombre_negocio || '';
-                form.color_primario.value = data.config.color_primario || '#000000';
-                form.logo_url.value = data.config.logo_url || '';
-                form.whatsapp_tel.value = data.config.whatsapp_tel || '';
-
-                const hero = data.content.find(c => c.Seccion_ID === 'hero');
-                if(hero) {
-                    form.hero_titulo.value = hero.Titulo || '';
-                    form.hero_subtitulo.value = hero.Subtitulo || '';
-                    form.hero_cta.value = hero.CTA_Texto || '';
-                }
-
-                document.getElementById('panel-loader').classList.add('hidden');
-                form.classList.remove('hidden');
-            } catch (e) { 
-                console.error("Error al leer:", e);
-                alert("No se pudo conectar con el Sheets. Verifica la URL en el código."); 
-            }
-        }
-
-        document.getElementById('admin-form').onsubmit = async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('save-btn');
-            const originalText = btn.innerText;
+        async function load() {
+            const res = await fetch(API_URL + '?t=' + Date.now());
+            const data = await res.json();
+            const form = document.getElementById('master-form');
             
-            btn.innerText = "SINCRONIZANDO...";
-            btn.disabled = true;
+            form.nombre_negocio.value = data.config.nombre_negocio || '';
+            form.logo_url.value = data.config.logo_url || '';
+            form.color_primario.value = data.config.color_primario || '#000000';
+            form.hero_bg_url.value = data.config.hero_bg_url || '';
+            form.hero_text_color.value = data.config.hero_text_color || '#000000';
 
-            const formData = new FormData(e.target);
-            const dataToSave = {
+            const hero = data.content.find(c => c.Seccion_ID.toLowerCase() === 'hero');
+            form.hero_titulo.value = hero.Titulo || '';
+            form.hero_subtitulo.value = hero.Subtitulo || '';
+            form.hero_cta.value = hero.CTA_Texto || '';
+
+            data.gallery.forEach(g => addItem('gallery', g));
+            data.services.forEach(s => addItem('service', s));
+        }
+
+        function addItem(type, data = {}) {
+            const container = type === 'gallery' ? document.getElementById('gallery-list') : document.getElementById('services-list');
+            const div = document.createElement('div');
+            div.className = "bg-white p-6 rounded-2xl border shadow-sm flex flex-col md:flex-row gap-4 items-center";
+            
+            if(type === 'gallery') {
+                div.innerHTML = `
+                    <input type="text" placeholder="URL Imagen" value="${data.URL||''}" class="g-url p-3 bg-gray-50 rounded-lg border w-full">
+                    <input type="text" placeholder="Título Proyecto" value="${data.Titulo||''}" class="g-titulo p-3 bg-gray-50 rounded-lg border w-full font-bold">
+                    <input type="text" placeholder="Descripción" value="${data.Descripcion||''}" class="g-desc p-3 bg-gray-50 rounded-lg border w-full text-sm">
+                    <button type="button" onclick="this.parentElement.remove()" class="text-red-500 font-bold px-4">Eliminar</button>`;
+            } else {
+                div.innerHTML = `
+                    <input type="text" placeholder="Servicio" value="${data.Servicio||''}" class="s-nombre p-3 bg-gray-50 rounded-lg border w-full font-bold">
+                    <input type="number" placeholder="Precio" value="${data.Precio_Base||''}" class="s-precio p-3 bg-gray-50 rounded-lg border w-32">
+                    <input type="text" placeholder="Descripción" value="${data.Descripcion||''}" class="s-desc p-3 bg-gray-50 rounded-lg border w-full">
+                    <select class="s-activo p-3 bg-gray-50 rounded-lg border">
+                        <option value="TRUE" ${String(data.Activo).toUpperCase()==='TRUE'?'selected':''}>Activo</option>
+                        <option value="FALSE" ${String(data.Activo).toUpperCase()==='FALSE'?'selected':''}>Oculto</option>
+                    </select>
+                    <button type="button" onclick="this.parentElement.remove()" class="text-red-500 font-bold px-4">Eliminar</button>`;
+            }
+            container.appendChild(div);
+        }
+
+        async function saveAll() {
+            const btn = document.getElementById('save-master');
+            btn.innerText = "GUARDANDO...";
+            const form = document.getElementById('master-form');
+
+            const payload = {
                 action: 'updateFull',
                 config: {
-                    nombre_negocio: formData.get('nombre_negocio'),
-                    color_primario: formData.get('color_primario'),
-                    logo_url: formData.get('logo_url'),
-                    whatsapp_tel: formData.get('whatsapp_tel')
+                    nombre_negocio: form.nombre_negocio.value,
+                    logo_url: form.logo_url.value,
+                    color_primario: form.color_primario.value,
+                    hero_bg_url: form.hero_bg_url.value,
+                    hero_text_color: form.hero_text_color.value
                 },
                 hero: {
-                    titulo: formData.get('hero_titulo'),
-                    subtitulo: formData.get('hero_subtitulo'),
-                    cta: formData.get('hero_cta')
-                }
+                    titulo: form.hero_titulo.value,
+                    subtitulo: form.hero_subtitulo.value,
+                    cta: form.hero_cta.value
+                },
+                gallery: Array.from(document.querySelectorAll('#gallery-list > div')).map(div => ({
+                    URL: div.querySelector('.g-url').value,
+                    Titulo: div.querySelector('.g-titulo').value,
+                    Descripcion: div.querySelector('.g-desc').value
+                })),
+                services: Array.from(document.querySelectorAll('#services-list > div')).map(div => ({
+                    Servicio: div.querySelector('.s-nombre').value,
+                    Precio_Base: div.querySelector('.s-precio').value,
+                    Descripcion: div.querySelector('.s-desc').value,
+                    Activo: div.querySelector('.s-activo').value
+                }))
             };
 
-            try {
-                // ENVÍO DE DATOS
-                await fetch(API_URL, {
-                    method: 'POST',
-                    mode: 'no-cors', // Evita bloqueos de seguridad de Google
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(dataToSave)
-                });
+            await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+            setTimeout(() => { btn.innerText = "¡GUARDADO!"; setTimeout(()=> btn.innerText="GUARDAR CAMBIOS", 2000); }, 1500);
+        }
 
-                // Simulación de éxito por el modo 'no-cors'
-                setTimeout(() => {
-                    alert("¡ÉXITO! Los datos han sido enviados a Google Sheets.\n\nRecuerda refrescar el sitio principal (Ctrl + F5) para ver los cambios.");
-                    btn.innerText = originalText;
-                    btn.disabled = false;
-                }, 1500);
+        function showTab(id) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + id).classList.add('active');
+            document.getElementById('btn-' + id).classList.add('active');
+        }
 
-            } catch (error) {
-                console.error("Fallo al guardar:", error);
-                alert("Error de red al intentar guardar.");
-                btn.innerText = originalText;
-                btn.disabled = false;
-            }
-        };
-
-        // Iniciar carga al abrir la página
-        loadData();
+        load();
     </script>
 </body>
 </html>
