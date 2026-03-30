@@ -7,98 +7,148 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        :root { --p: #0066FF; }
+        :root { --p: #0066FF; --bg: #ffffff; }
         .bg-primary { background-color: var(--p); }
         .text-primary { color: var(--p); }
-        #loader { transition: opacity 0.5s ease; }
+        .border-primary { border-color: var(--p); }
+        body { background-color: var(--bg); }
+        #loader { transition: all 0.5s ease; }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 font-sans">
+<body class="text-gray-900 font-sans scroll-smooth">
 
-    <div id="loader" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white">
-        <div class="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-        <p class="mt-4 text-gray-500 font-medium">Sincronizando con Najarro X CMS...</p>
+    <div id="loader" class="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-white">
+        <div class="w-10 h-10 border-4 border-gray-200 border-t-primary rounded-full animate-spin"></div>
     </div>
 
-    <main id="app" class="opacity-0 transition-opacity duration-1000">
-        <section id="hero" class="min-h-screen flex items-center justify-center text-center px-6 py-20 bg-white">
-            <div class="max-w-4xl mx-auto" data-aos="fade-up">
-                <img id="logo" src="" alt="Logo" class="h-16 mx-auto mb-8 hidden">
-                <h1 id="hero-title" class="text-5xl md:text-7xl font-black mb-6"></h1>
-                <p id="hero-subtitle" class="text-xl text-gray-600 mb-10 max-w-2xl mx-auto"></p>
-                <a id="hero-cta" href="#cotizador" class="bg-primary text-white px-8 py-4 rounded-full font-bold shadow-xl hover:scale-105 transition-transform inline-block"></a>
+    <nav class="fixed top-0 w-full z-50 glass border-b border-gray-100">
+        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+            <span id="nav-brand" class="font-black text-2xl tracking-tighter uppercase">NAJARRO X</span>
+            <div class="hidden md:flex gap-8 text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">
+                <a href="#hero" class="hover:text-primary transition">Inicio</a>
+                <a href="#portfolio" class="hover:text-primary transition">Proyectos</a>
+                <a href="#cotizador" class="hover:text-primary transition">Cotizar</a>
             </div>
-        </section>
+            <a id="nav-wa" href="#" target="_blank" class="bg-primary text-white px-6 py-3 rounded-full text-xs font-bold shadow-lg hover:brightness-110 transition">WHATSAPP</a>
+        </div>
+    </nav>
 
-        <section id="portfolio" class="py-20 bg-gray-100 px-6">
-            <h2 class="text-3xl font-bold text-center mb-12">Nuestros Proyectos</h2>
-            <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto"></div>
-        </section>
-    </main>
+    <section id="hero" class="min-h-screen flex items-center justify-center px-6 pt-20">
+        <div class="max-w-4xl mx-auto text-center" data-aos="fade-up">
+            <img id="logo" src="" class="h-20 mx-auto mb-10 hidden">
+            <h1 id="hero-title" class="text-6xl md:text-8xl font-black mb-6 tracking-tight leading-none"></h1>
+            <p id="hero-subtitle" class="text-xl text-gray-500 mb-12 max-w-2xl mx-auto leading-relaxed"></p>
+            <a href="#cotizador" id="hero-cta" class="inline-block bg-primary text-white px-10 py-5 rounded-2xl font-bold text-lg shadow-2xl hover:scale-105 transition-transform"></a>
+        </div>
+    </section>
+
+    <section id="portfolio" class="py-32 bg-gray-50 px-6">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-black mb-16 text-center tracking-tight">PORTAFOLIO SELECCIONADO</h2>
+            <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"></div>
+        </div>
+    </section>
+
+    <section id="cotizador" class="py-32 px-6">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-black mb-4 tracking-tight uppercase">Cotizador Online</h2>
+                <p class="text-gray-400 font-medium">Personaliza tu paquete y obtén un estimado al instante.</p>
+            </div>
+            
+            <div id="services-list" class="space-y-4 mb-12"></div>
+
+            <div class="bg-gray-900 rounded-[2.5rem] p-10 text-center text-white shadow-2xl">
+                <p class="text-gray-400 uppercase text-xs font-black tracking-widest mb-2">Inversión Estimada</p>
+                <div id="total-price" class="text-6xl font-black mb-8 text-primary">$0.00</div>
+                <button onclick="enviarWhatsApp()" class="w-full bg-primary py-5 rounded-2xl font-black text-xl hover:scale-[1.02] transition">SOLICITAR PROYECTO</button>
+            </div>
+        </div>
+    </section>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // --- CONFIGURACIÓN ---
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyZl4BAk3XJ3rC2HF2q71zlxVwJjcJzgYhqTiJwlz9g_iM0TIB90cL8bd-IuWs1MXiY5g/exec';
+        // UBICACIÓN DE TU URL (REEMPLAZAR AQUÍ)
+        const API_URL = 'Thttps://script.google.com/macros/s/AKfycbyZl4BAk3XJ3rC2HF2q71zlxVwJjcJzgYhqTiJwlz9g_iM0TIB90cL8bd-IuWs1MXiY5g/exec'; 
+        
+        let config = {};
+        let total = 0;
+        let seleccionados = [];
 
         async function init() {
             try {
-                // Llamada al motor de Google
-                const response = await fetch(SCRIPT_URL);
-                if (!response.ok) throw new Error("Error en red");
-                
-                const data = await response.json();
-                
-                // 1. Aplicar Configuración Visual
-                if (data.config.color_primario) {
-                    document.documentElement.style.setProperty('--p', data.config.color_primario);
-                }
-                document.title = data.config.nombre_negocio || "Mi Web";
-                if(data.config.logo_url) {
-                    const logo = document.getElementById('logo');
-                    logo.src = data.config.logo_url;
-                    logo.classList.remove('hidden');
+                const res = await fetch(API_URL + '?t=' + new Date().getTime());
+                const data = await res.json();
+                config = data.config;
+
+                // Aplicar Configuración
+                document.documentElement.style.setProperty('--p', config.color_primario || '#0066FF');
+                document.documentElement.style.setProperty('--bg', config.bg_body || '#ffffff');
+                document.title = config.nombre_negocio;
+                document.getElementById('nav-brand').innerText = config.nombre_negocio;
+                if(config.logo_url) {
+                    document.getElementById('logo').src = config.logo_url;
+                    document.getElementById('logo').classList.remove('hidden');
                 }
 
-                // 2. Renderizar Contenido Hero (Seccion_ID: hero)
-                const heroData = data.content.find(item => item.Seccion_ID === 'hero');
-                if (heroData) {
-                    document.getElementById('hero-title').innerText = heroData.Titulo;
-                    document.getElementById('hero-subtitle').innerText = heroData.Subtitulo;
-                    document.getElementById('hero-cta').innerText = heroData.CTA_Texto;
-                }
+                // Render Hero
+                const hero = data.content.find(c => c.Seccion_ID === 'hero');
+                document.getElementById('hero-title').innerText = hero.Titulo;
+                document.getElementById('hero-subtitle').innerText = hero.Subtitulo;
+                document.getElementById('hero-cta').innerText = hero.CTA_Texto;
 
-                // 3. Renderizar Galería
-                const galleryGrid = document.getElementById('gallery-grid');
+                // Render Galería
+                const grid = document.getElementById('gallery-grid');
                 data.gallery.forEach(item => {
-                    galleryGrid.innerHTML += `
-                        <div class="bg-white rounded-2xl overflow-hidden shadow-lg" data-aos="zoom-in">
-                            <img src="${item.URL}" class="w-full h-64 object-cover" alt="${item.Titulo}">
-                            <div class="p-6">
-                                <h3 class="font-bold text-xl">${item.Titulo}</h3>
-                                <p class="text-gray-500 text-sm">${item.Descripcion}</p>
+                    grid.innerHTML += `
+                        <div class="group relative overflow-hidden rounded-[2rem] bg-white shadow-xl" data-aos="fade-up">
+                            <img src="${item.URL}" class="w-full h-80 object-cover group-hover:scale-110 transition duration-700">
+                            <div class="p-8">
+                                <h3 class="font-bold text-xl mb-1">${item.Titulo}</h3>
+                                <p class="text-gray-400 text-sm font-medium">${item.Descripcion}</p>
                             </div>
-                        </div>
-                    `;
+                        </div>`;
                 });
 
-                // Finalizar carga
-                document.getElementById('loader').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('loader').classList.add('hidden');
-                    document.getElementById('app').classList.replace('opacity-0', 'opacity-100');
-                    AOS.init();
-                }, 500);
+                // Render Cotizador
+                const list = document.getElementById('services-list');
+                data.services.filter(s => s.Activo === true || s.Activo === "TRUE").forEach(s => {
+                    list.innerHTML += `
+                        <label class="flex items-center justify-between p-6 rounded-2xl border-2 border-gray-100 hover:border-primary cursor-pointer transition group">
+                            <div class="flex items-center gap-4">
+                                <input type="checkbox" class="w-6 h-6 rounded-full border-gray-300 text-primary focus:ring-primary" 
+                                       onchange="calc(this, ${s.Precio_Base}, '${s.Servicio}')">
+                                <div>
+                                    <p class="font-bold text-lg group-hover:text-primary transition">${s.Servicio}</p>
+                                    <p class="text-gray-400 text-sm">${s.Descripcion}</p>
+                                </div>
+                            </div>
+                            <span class="font-black text-xl">$${s.Precio_Base}</span>
+                        </label>`;
+                });
 
-            } catch (error) {
-                console.error("Error cargando CMS:", error);
-                document.getElementById('loader').innerHTML = `
-                    <div class="text-center p-6 bg-red-50 rounded-xl">
-                        <p class="text-red-600 font-bold">Error de sincronización</p>
-                        <p class="text-xs text-red-400 mt-2">Verifica la URL del script o los permisos de Google.</p>
-                    </div>
-                `;
+                document.getElementById('loader').classList.add('opacity-0', 'pointer-events-none');
+                AOS.init({ duration: 1000, once: true });
+
+            } catch (e) { console.error(e); }
+        }
+
+        function calc(cb, precio, nombre) {
+            if(cb.checked) {
+                total += precio;
+                seleccionados.push(nombre);
+            } else {
+                total -= precio;
+                seleccionados = seleccionados.filter(n => n !== nombre);
             }
+            document.getElementById('total-price').innerText = `$${total.toFixed(2)}`;
+        }
+
+        function enviarWhatsApp() {
+            if(total === 0) return alert("Por favor selecciona al menos un servicio.");
+            const msg = encodeURIComponent(`¡Hola! Me interesa cotizar:\n\n${seleccionados.map(s => "✅ " + s).join("\n")}\n\nTotal estimado: $${total.toFixed(2)}`);
+            window.open(`https://wa.me/${config.whatsapp_tel}?text=${msg}`, '_blank');
         }
 
         init();
