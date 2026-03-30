@@ -78,7 +78,7 @@
 
         async function init() {
             try {
-                const res = await fetch(API_URL + '?t=' + new Date().getTime());
+                const response = await fetch(API_URL + "?t=" + Date.now());
                 const data = await res.json();
                 config = data.config;
 
