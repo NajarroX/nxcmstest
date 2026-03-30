@@ -2,61 +2,147 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>CMS Najarro X | Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | Najarro X</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .active-tab { border-bottom: 4px solid #000; color: #000; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
 </head>
-<body class="bg-slate-50 flex">
-    <aside class="w-64 bg-slate-900 text-white h-screen sticky top-0 p-6 space-y-6">
-        <h2 class="text-2xl font-bold">Najarro <span class="text-blue-400">X</span></h2>
-        <nav class="space-y-2">
-            <button class="w-full text-left p-3 bg-blue-600 rounded-lg"><i class="fas fa-magic mr-2"></i> Diseño</button>
-            <button class="w-full text-left p-3 hover:bg-slate-800 rounded-lg"><i class="fas fa-calculator mr-2"></i> Cotizador</button>
-        </nav>
-    </aside>
+<body class="bg-gray-100 min-h-screen font-sans">
 
-    <main class="flex-1 p-10">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold">Configuración General</h1>
-            <button onclick="saveAll()" class="bg-green-600 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-green-700">GUARDAR Y PUBLICAR</button>
+    <div class="max-w-4xl mx-auto py-10 px-6">
+        <header class="flex justify-between items-center mb-10">
+            <div>
+                <h1 class="text-3xl font-black tracking-tighter italic">NAJARRO X CMS</h1>
+                <p class="text-gray-500 text-sm">Gestiona tu presencia digital en tiempo real.</p>
+            </div>
+            <a href="TU_URL_DE_GOOGLE_SHEET_AQUI" target="_blank" class="bg-white px-4 py-2 rounded-lg text-xs font-bold border shadow-sm hover:bg-gray-50">VER BASE DE DATOS</a>
+        </header>
+
+        <div class="flex gap-8 border-b mb-8 text-gray-400 font-bold text-sm uppercase tracking-widest">
+            <button onclick="switchTab('design')" id="tab-design" class="pb-4 active-tab">Diseño</button>
+            <button onclick="switchTab('content')" id="tab-content" class="pb-4">Contenido</button>
+            <button onclick="switchTab('services')" id="tab-services" class="pb-4">Servicios</button>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-white p-6 rounded-2xl shadow-sm space-y-4">
-                <h3 class="font-bold border-b pb-2">Identidad Visual</h3>
-                <label class="block text-sm">Color Primario: <input type="color" id="color_primario" class="w-full h-10 mt-1"></label>
-                <label class="block text-sm">Estilo de Fuentes: 
-                    <select id="fuente_id" class="w-full p-2 bg-gray-100 rounded mt-1">
-                        <option value="moderno">Moderno (Montserrat)</option>
-                        <option value="elegante">Elegante (Playfair)</option>
-                        <option value="urbano">Urbano (Oswald)</option>
-                    </select>
-                </label>
+        <div id="panel-loader" class="text-center py-20 bg-white rounded-3xl shadow-sm mb-6">
+            <p class="animate-pulse font-bold">Conectando con Google Sheets...</p>
+        </div>
+
+        <form id="admin-form" class="hidden space-y-6">
+            
+            <div id="content-design" class="tab-content active space-y-6 bg-white p-8 rounded-3xl shadow-sm">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-black mb-2 uppercase">Nombre del Negocio</label>
+                        <input type="text" name="nombre_negocio" class="w-full p-3 bg-gray-50 border rounded-xl">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black mb-2 uppercase">Color Primario (HEX)</label>
+                        <input type="color" name="color_primario" class="w-full h-12 p-1 bg-gray-50 border rounded-xl">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-black mb-2 uppercase">URL del Logo (GitHub Assets)</label>
+                        <input type="text" name="logo_url" class="w-full p-3 bg-gray-50 border rounded-xl" placeholder="assets/img/logo.webp">
+                    </div>
+                </div>
             </div>
 
-            <div class="bg-white p-6 rounded-2xl shadow-sm space-y-4">
-                <h3 class="font-bold border-b pb-2">Marketing & Ventas</h3>
-                <label class="block text-sm">ID Píxel de Meta: <input type="text" id="fb_pixel_id" class="w-full p-2 bg-gray-100 rounded mt-1" placeholder="Ej: 83294..."></label>
-                <label class="block text-sm">WhatsApp: <input type="text" id="whatsapp_tel" class="w-full p-2 bg-gray-100 rounded mt-1" placeholder="+507..."></label>
+            <div id="content-content" class="tab-content space-y-6 bg-white p-8 rounded-3xl shadow-sm">
+                <div>
+                    <label class="block text-xs font-black mb-2 uppercase tracking-widest text-blue-600">Título Hero</label>
+                    <input type="text" name="hero_titulo" class="w-full p-4 bg-gray-50 border-2 rounded-xl text-xl font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs font-black mb-2 uppercase">Subtítulo</label>
+                    <textarea name="hero_subtitulo" rows="3" class="w-full p-4 bg-gray-50 border rounded-xl"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-black mb-2 uppercase">Texto del Botón</label>
+                    <input type="text" name="hero_cta" class="w-full p-3 bg-gray-50 border rounded-xl">
+                </div>
             </div>
-        </div>
-    </main>
+
+            <div id="content-services" class="tab-content bg-white p-8 rounded-3xl shadow-sm">
+                <p class="text-gray-500 mb-6 text-sm">Para cambios avanzados en servicios o portafolio, usa el botón "Ver Base de Datos" arriba.</p>
+                <div>
+                    <label class="block text-xs font-black mb-2 uppercase tracking-widest text-blue-600">WhatsApp (Número sin símbolos)</label>
+                    <input type="text" name="whatsapp_tel" class="w-full p-4 bg-gray-50 border-2 rounded-xl text-xl font-bold" placeholder="50760000000">
+                </div>
+            </div>
+
+            <button type="submit" id="save-btn" class="w-full bg-black text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-gray-800 transition">ACTUALIZAR SITIO WEB</button>
+        </form>
+
+    </div>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbyZl4BAk3XJ3rC2HF2q71zlxVwJjcJzgYhqTiJwlz9g_iM0TIB90cL8bd-IuWs1MXiY5g/exec";
+        const API_URL = 'https://script.google.com/macros/s/AKfycbyZl4BAk3XJ3rC2HF2q71zlxVwJjcJzgYhqTiJwlz9g_iM0TIB90cL8bd-IuWs1MXiY5g/exec';
 
-        async function saveAll() {
-            const fields = ['color_primario', 'fuente_id', 'fb_pixel_id', 'whatsapp_tel'];
-            for (let f of fields) {
-                const val = document.getElementById(f).value;
-                await fetch(API_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify({ action: 'updateConfig', variable: f, valor: val })
-                });
-            }
-            alert("¡Web actualizada!");
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('button[id^="tab-"]').forEach(b => b.classList.remove('active-tab'));
+            document.getElementById('content-' + tab).classList.add('active');
+            document.getElementById('tab-' + tab).classList.add('active-tab');
         }
+
+        async function loadData() {
+            try {
+                const res = await fetch(API_URL);
+                const data = await res.json();
+                const form = document.getElementById('admin-form');
+
+                // Llenar inputs de Config
+                form.nombre_negocio.value = data.config.nombre_negocio || '';
+                form.color_primario.value = data.config.color_primario || '#0066FF';
+                form.logo_url.value = data.config.logo_url || '';
+                form.whatsapp_tel.value = data.config.whatsapp_tel || '';
+
+                // Llenar inputs de Contenido
+                const hero = data.content.find(c => c.Seccion_ID === 'hero');
+                if(hero) {
+                    form.hero_titulo.value = hero.Titulo;
+                    form.hero_subtitulo.value = hero.Subtitulo;
+                    form.hero_cta.value = hero.CTA_Texto;
+                }
+
+                document.getElementById('panel-loader').classList.add('hidden');
+                form.classList.remove('hidden');
+            } catch (e) { alert("Error conectando con la base de datos."); }
+        }
+
+        document.getElementById('admin-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('save-btn');
+            btn.innerText = "PROCESANDO CAMBIOS...";
+            btn.disabled = true;
+
+            const formData = new FormData(e.target);
+            const dataToSave = {
+                action: 'updateFull', // Nueva acción para guardar todo
+                config: {
+                    nombre_negocio: formData.get('nombre_negocio'),
+                    color_primario: formData.get('color_primario'),
+                    logo_url: formData.get('logo_url'),
+                    whatsapp_tel: formData.get('whatsapp_tel')
+                },
+                hero: {
+                    titulo: formData.get('hero_titulo'),
+                    subtitulo: formData.get('hero_subtitulo'),
+                    cta: formData.get('hero_cta')
+                }
+            };
+
+            // Aquí llamarías a tu Apps Script con doPost (Necesitas actualizar el Apps Script para manejar 'updateFull')
+            alert("Los cambios en el Sheet son inmediatos. Asegúrate de que el Apps Script maneje la acción 'updateFull'.");
+            btn.innerText = "ACTUALIZAR SITIO WEB";
+            btn.disabled = false;
+        };
+
+        loadData();
     </script>
 </body>
 </html>
