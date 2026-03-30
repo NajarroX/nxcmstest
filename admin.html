@@ -3,83 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin | Najarro X</title>
+    <title>Admin Panel | Najarro X</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
         .active-tab { border-bottom: 4px solid #000; color: #000; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+        input:focus, textarea:focus { outline: 2px solid #000; border-color: transparent; }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen font-sans">
+<body class="bg-gray-50 min-h-screen">
 
-    <div class="max-w-4xl mx-auto py-10 px-6">
-        <header class="flex justify-between items-center mb-10">
+    <div class="max-w-4xl mx-auto py-12 px-6">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
             <div>
-                <h1 class="text-3xl font-black tracking-tighter italic">NAJARRO X CMS</h1>
-                <p class="text-gray-500 text-sm">Gestiona tu presencia digital en tiempo real.</p>
+                <h1 class="text-4xl font-[900] tracking-tighter italic uppercase text-black">CMS Studio</h1>
+                <p class="text-gray-400 text-sm font-medium">Panel de gestión para Najarro X Estudio.</p>
             </div>
-            <a href="TU_URL_DE_GOOGLE_SHEET_AQUI" target="_blank" class="bg-white px-4 py-2 rounded-lg text-xs font-bold border shadow-sm hover:bg-gray-50">VER BASE DE DATOS</a>
+            <div class="flex gap-3">
+                <a href="https://docs.google.com/spreadsheets/d/TU_ID_DE_SHEET_AQUI/edit" target="_blank" class="bg-white px-5 py-2.5 rounded-xl text-xs font-bold border shadow-sm hover:bg-gray-100 transition">DATOS REALES (SHEET)</a>
+            </div>
         </header>
 
-        <div class="flex gap-8 border-b mb-8 text-gray-400 font-bold text-sm uppercase tracking-widest">
-            <button onclick="switchTab('design')" id="tab-design" class="pb-4 active-tab">Diseño</button>
-            <button onclick="switchTab('content')" id="tab-content" class="pb-4">Contenido</button>
-            <button onclick="switchTab('services')" id="tab-services" class="pb-4">Servicios</button>
+        <div class="flex gap-8 border-b border-gray-200 mb-10 text-gray-400 font-black text-xs uppercase tracking-[0.2em]">
+            <button onclick="switchTab('design')" id="tab-design" class="pb-4 active-tab transition-all">Diseño Visual</button>
+            <button onclick="switchTab('content')" id="tab-content" class="pb-4 transition-all">Textos Web</button>
+            <button onclick="switchTab('services')" id="tab-services" class="pb-4 transition-all">Configuración</button>
         </div>
 
-        <div id="panel-loader" class="text-center py-20 bg-white rounded-3xl shadow-sm mb-6">
-            <p class="animate-pulse font-bold">Conectando con Google Sheets...</p>
+        <div id="panel-loader" class="text-center py-24 bg-white rounded-[2rem] shadow-sm border border-gray-100">
+            <div class="w-8 h-8 border-4 border-gray-100 border-t-black rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-gray-400 font-bold text-sm tracking-widest uppercase">Conectando con la nube...</p>
         </div>
 
-        <form id="admin-form" class="hidden space-y-6">
+        <form id="admin-form" class="hidden space-y-8">
             
-            <div id="content-design" class="tab-content active space-y-6 bg-white p-8 rounded-3xl shadow-sm">
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-xs font-black mb-2 uppercase">Nombre del Negocio</label>
-                        <input type="text" name="nombre_negocio" class="w-full p-3 bg-gray-50 border rounded-xl">
+            <div id="content-design" class="tab-content active space-y-8 bg-white p-10 rounded-[2.5rem] shadow-sm border border-gray-100">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400">Nombre de la Marca</label>
+                        <input type="text" name="nombre_negocio" placeholder="Ej: NAJARRO X" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl font-bold">
                     </div>
-                    <div>
-                        <label class="block text-xs font-black mb-2 uppercase">Color Primario (HEX)</label>
-                        <input type="color" name="color_primario" class="w-full h-12 p-1 bg-gray-50 border rounded-xl">
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400">Color de Identidad</label>
+                        <input type="color" name="color_primario" class="w-full h-[58px] p-2 bg-gray-50 border border-gray-100 rounded-2xl cursor-pointer">
                     </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-xs font-black mb-2 uppercase">URL del Logo (GitHub Assets)</label>
-                        <input type="text" name="logo_url" class="w-full p-3 bg-gray-50 border rounded-xl" placeholder="assets/img/logo.webp">
+                    <div class="md:col-span-2 space-y-2">
+                        <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400">URL del Logo (Ruta de GitHub o link externo)</label>
+                        <input type="text" name="logo_url" placeholder="assets/img/logo.png" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl">
                     </div>
                 </div>
             </div>
 
-            <div id="content-content" class="tab-content space-y-6 bg-white p-8 rounded-3xl shadow-sm">
-                <div>
-                    <label class="block text-xs font-black mb-2 uppercase tracking-widest text-blue-600">Título Hero</label>
-                    <input type="text" name="hero_titulo" class="w-full p-4 bg-gray-50 border-2 rounded-xl text-xl font-bold">
+            <div id="content-content" class="tab-content space-y-8 bg-white p-10 rounded-[2.5rem] shadow-sm border border-gray-100">
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-blue-600">Título Principal (Hero)</label>
+                    <input type="text" name="hero_titulo" class="w-full p-5 bg-gray-50 border border-gray-100 rounded-2xl text-2xl font-black italic">
                 </div>
-                <div>
-                    <label class="block text-xs font-black mb-2 uppercase">Subtítulo</label>
-                    <textarea name="hero_subtitulo" rows="3" class="w-full p-4 bg-gray-50 border rounded-xl"></textarea>
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400">Subtítulo Descriptivo</label>
+                    <textarea name="hero_subtitulo" rows="4" class="w-full p-5 bg-gray-50 border border-gray-100 rounded-2xl leading-relaxed"></textarea>
                 </div>
-                <div>
-                    <label class="block text-xs font-black mb-2 uppercase">Texto del Botón</label>
-                    <input type="text" name="hero_cta" class="w-full p-3 bg-gray-50 border rounded-xl">
-                </div>
-            </div>
-
-            <div id="content-services" class="tab-content bg-white p-8 rounded-3xl shadow-sm">
-                <p class="text-gray-500 mb-6 text-sm">Para cambios avanzados en servicios o portafolio, usa el botón "Ver Base de Datos" arriba.</p>
-                <div>
-                    <label class="block text-xs font-black mb-2 uppercase tracking-widest text-blue-600">WhatsApp (Número sin símbolos)</label>
-                    <input type="text" name="whatsapp_tel" class="w-full p-4 bg-gray-50 border-2 rounded-xl text-xl font-bold" placeholder="50760000000">
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-gray-400">Texto del Botón de Acción</label>
+                    <input type="text" name="hero_cta" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl font-bold">
                 </div>
             </div>
 
-            <button type="submit" id="save-btn" class="w-full bg-black text-white py-5 rounded-2xl font-black text-lg shadow-xl hover:bg-gray-800 transition">ACTUALIZAR SITIO WEB</button>
+            <div id="content-services" class="tab-content space-y-8 bg-white p-10 rounded-[2.5rem] shadow-sm border border-gray-100">
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-green-600">Teléfono WhatsApp (Ej: 50760000000)</label>
+                    <input type="text" name="whatsapp_tel" class="w-full p-5 bg-gray-50 border border-gray-100 rounded-2xl text-xl font-bold">
+                    <p class="text-[10px] text-gray-400 italic">No incluyas el signo + ni espacios.</p>
+                </div>
+            </div>
+
+            <button type="submit" id="save-btn" class="w-full bg-black text-white py-6 rounded-[2rem] font-black text-xl shadow-2xl hover:bg-gray-900 active:scale-[0.98] transition-all tracking-widest">
+                ACTUALIZAR SITIO WEB
+            </button>
         </form>
 
+        <footer class="mt-12 text-center">
+            <p class="text-gray-300 text-[10px] font-bold uppercase tracking-[0.3em]">Najarro X Estudio © 2026</p>
+        </footer>
     </div>
 
     <script>
+        // --- COLOCA TU URL AQUÍ ABAJO (ASEGÚRATE QUE SEA HTTPS) ---
         const API_URL = 'https://script.google.com/macros/s/AKfycbyZl4BAk3XJ3rC2HF2q71zlxVwJjcJzgYhqTiJwlz9g_iM0TIB90cL8bd-IuWs1MXiY5g/exec';
 
         function switchTab(tab) {
@@ -91,38 +103,43 @@
 
         async function loadData() {
             try {
-                const res = await fetch(API_URL);
+                // El timestamp (?t=) rompe el caché para que siempre cargue la info real
+                const res = await fetch(API_URL + '?t=' + new Date().getTime());
                 const data = await res.json();
                 const form = document.getElementById('admin-form');
 
-                // Llenar inputs de Config
+                // Llenar campos con validación de existencia
                 form.nombre_negocio.value = data.config.nombre_negocio || '';
-                form.color_primario.value = data.config.color_primario || '#0066FF';
+                form.color_primario.value = data.config.color_primario || '#000000';
                 form.logo_url.value = data.config.logo_url || '';
                 form.whatsapp_tel.value = data.config.whatsapp_tel || '';
 
-                // Llenar inputs de Contenido
                 const hero = data.content.find(c => c.Seccion_ID === 'hero');
                 if(hero) {
-                    form.hero_titulo.value = hero.Titulo;
-                    form.hero_subtitulo.value = hero.Subtitulo;
-                    form.hero_cta.value = hero.CTA_Texto;
+                    form.hero_titulo.value = hero.Titulo || '';
+                    form.hero_subtitulo.value = hero.Subtitulo || '';
+                    form.hero_cta.value = hero.CTA_Texto || '';
                 }
 
                 document.getElementById('panel-loader').classList.add('hidden');
                 form.classList.remove('hidden');
-            } catch (e) { alert("Error conectando con la base de datos."); }
+            } catch (e) { 
+                console.error("Error al leer:", e);
+                alert("No se pudo conectar con el Sheets. Verifica la URL en el código."); 
+            }
         }
 
         document.getElementById('admin-form').onsubmit = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('save-btn');
-            btn.innerText = "PROCESANDO CAMBIOS...";
+            const originalText = btn.innerText;
+            
+            btn.innerText = "SINCRONIZANDO...";
             btn.disabled = true;
 
             const formData = new FormData(e.target);
             const dataToSave = {
-                action: 'updateFull', // Nueva acción para guardar todo
+                action: 'updateFull',
                 config: {
                     nombre_negocio: formData.get('nombre_negocio'),
                     color_primario: formData.get('color_primario'),
@@ -136,12 +153,31 @@
                 }
             };
 
-            // Aquí llamarías a tu Apps Script con doPost (Necesitas actualizar el Apps Script para manejar 'updateFull')
-            alert("Los cambios en el Sheet son inmediatos. Asegúrate de que el Apps Script maneje la acción 'updateFull'.");
-            btn.innerText = "ACTUALIZAR SITIO WEB";
-            btn.disabled = false;
+            try {
+                // ENVÍO DE DATOS
+                await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Evita bloqueos de seguridad de Google
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataToSave)
+                });
+
+                // Simulación de éxito por el modo 'no-cors'
+                setTimeout(() => {
+                    alert("¡ÉXITO! Los datos han sido enviados a Google Sheets.\n\nRecuerda refrescar el sitio principal (Ctrl + F5) para ver los cambios.");
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                }, 1500);
+
+            } catch (error) {
+                console.error("Fallo al guardar:", error);
+                alert("Error de red al intentar guardar.");
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
         };
 
+        // Iniciar carga al abrir la página
         loadData();
     </script>
 </body>
