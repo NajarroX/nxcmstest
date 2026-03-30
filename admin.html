@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CMS Najarro X | Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 flex">
+    <aside class="w-64 bg-slate-900 text-white h-screen sticky top-0 p-6 space-y-6">
+        <h2 class="text-2xl font-bold">Najarro <span class="text-blue-400">X</span></h2>
+        <nav class="space-y-2">
+            <button class="w-full text-left p-3 bg-blue-600 rounded-lg"><i class="fas fa-magic mr-2"></i> Diseño</button>
+            <button class="w-full text-left p-3 hover:bg-slate-800 rounded-lg"><i class="fas fa-calculator mr-2"></i> Cotizador</button>
+        </nav>
+    </aside>
+
+    <main class="flex-1 p-10">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold">Configuración General</h1>
+            <button onclick="saveAll()" class="bg-green-600 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-green-700">GUARDAR Y PUBLICAR</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm space-y-4">
+                <h3 class="font-bold border-b pb-2">Identidad Visual</h3>
+                <label class="block text-sm">Color Primario: <input type="color" id="color_primario" class="w-full h-10 mt-1"></label>
+                <label class="block text-sm">Estilo de Fuentes: 
+                    <select id="fuente_id" class="w-full p-2 bg-gray-100 rounded mt-1">
+                        <option value="moderno">Moderno (Montserrat)</option>
+                        <option value="elegante">Elegante (Playfair)</option>
+                        <option value="urbano">Urbano (Oswald)</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm space-y-4">
+                <h3 class="font-bold border-b pb-2">Marketing & Ventas</h3>
+                <label class="block text-sm">ID Píxel de Meta: <input type="text" id="fb_pixel_id" class="w-full p-2 bg-gray-100 rounded mt-1" placeholder="Ej: 83294..."></label>
+                <label class="block text-sm">WhatsApp: <input type="text" id="whatsapp_tel" class="w-full p-2 bg-gray-100 rounded mt-1" placeholder="+507..."></label>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbykA2Qhx3TIxybnu-jOF-hLq6ApD7HDC8LW7MbqpHGkT09LxO6JaACYHvETlLFZscecAQ/exec";
+
+        async function saveAll() {
+            const fields = ['color_primario', 'fuente_id', 'fb_pixel_id', 'whatsapp_tel'];
+            for (let f of fields) {
+                const val = document.getElementById(f).value;
+                await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: JSON.stringify({ action: 'updateConfig', variable: f, valor: val })
+                });
+            }
+            alert("¡Web actualizada!");
+        }
+    </script>
+</body>
+</html>
