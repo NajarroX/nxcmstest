@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Najarro X Estudio | Digital Craft</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -18,6 +18,15 @@
             font-family: 'Space Grotesk', sans-serif;
             background: #0a0a0a;
             overflow-x: hidden;
+            width: 100%;
+            position: relative;
+        }
+
+        /* Contenedor principal que previene overflow */
+        .main-container {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
         }
 
         h1, h2, h3, .font-display {
@@ -26,7 +35,7 @@
             letter-spacing: -0.02em;
         }
 
-        /* Custom cursor */
+        /* Custom cursor - oculto en móvil */
         .cursor {
             width: 12px;
             height: 12px;
@@ -50,24 +59,24 @@
             transition: all 0.15s ease;
         }
 
+        @media (max-width: 768px) {
+            .cursor, .cursor-follower {
+                display: none;
+            }
+        }
+
         /* Smooth scroll */
         html {
             scroll-behavior: smooth;
         }
 
         /* Hero parallax layers */
-        .parallax-container {
-            position: relative;
-            height: 100vh;
-            overflow: hidden;
-        }
-
         .parallax-bg {
             position: absolute;
-            top: -10%;
-            left: -10%;
-            width: 120%;
-            height: 120%;
+            top: -5%;
+            left: -5%;
+            width: 110%;
+            height: 110%;
             background-size: cover;
             background-position: center;
             will-change: transform;
@@ -83,12 +92,12 @@
 
         /* Glass morphism nav */
         .glass-nav {
-            background: rgba(10, 10, 10, 0.8);
+            background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* Animated gradient text */
+        /* Animated gradient text - responsive */
         .gradient-text {
             background: linear-gradient(135deg, #fff 0%, #a0a0a0 50%, #fff 100%);
             background-size: 200% auto;
@@ -124,13 +133,32 @@
             box-shadow: 0 0 20px rgba(255,255,255,0.1);
         }
 
-        /* Custom Checkbox - FIXED */
+        /* Responsive service card */
+        @media (max-width: 768px) {
+            .service-card {
+                padding: 1.25rem !important;
+            }
+            .service-card .flex {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            .service-card .flex > div:first-child {
+                flex: 1;
+                min-width: 0;
+            }
+            .service-card .text-2xl {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Custom Checkbox */
         .checkbox-wrapper {
             position: relative;
             display: inline-block;
             width: 24px;
             height: 24px;
             cursor: pointer;
+            flex-shrink: 0;
         }
 
         .checkbox-wrapper input {
@@ -192,7 +220,7 @@
         .gallery-item {
             position: relative;
             overflow: hidden;
-            border-radius: 2rem;
+            border-radius: 1.5rem;
             aspect-ratio: 4/5;
             cursor: pointer;
         }
@@ -216,11 +244,23 @@
             transition: opacity 0.4s ease;
             display: flex;
             align-items: flex-end;
-            padding: 2rem;
+            padding: 1.5rem;
         }
 
         .gallery-item:hover .gallery-overlay {
             opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-overlay {
+                padding: 1rem;
+            }
+            .gallery-overlay h3 {
+                font-size: 1.125rem;
+            }
+            .gallery-overlay p {
+                font-size: 0.75rem;
+            }
         }
 
         /* Animated button */
@@ -248,10 +288,10 @@
             height: 300px;
         }
 
-        /* Scroll indicator */
+        /* Scroll indicator - responsive */
         .scroll-indicator {
             position: absolute;
-            bottom: 2rem;
+            bottom: 1.5rem;
             left: 50%;
             transform: translateX(-50%);
             z-index: 20;
@@ -264,22 +304,13 @@
         }
 
         /* Mobile menu animation */
-        .mobile-menu-enter {
-            transform: translateX(100%);
-        }
-
-        .mobile-menu-enter-active {
-            transform: translateX(0);
-            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .mobile-menu-exit {
-            transform: translateX(0);
-        }
-
-        .mobile-menu-exit-active {
+        #mobile-menu {
             transform: translateX(100%);
             transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        #mobile-menu.open {
+            transform: translateX(0);
         }
 
         /* Number counter */
@@ -302,7 +333,7 @@
 
         /* Custom scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
 
         ::-webkit-scrollbar-track {
@@ -312,10 +343,6 @@
         ::-webkit-scrollbar-thumb {
             background: #333;
             border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
         }
 
         /* Loading animation */
@@ -331,10 +358,16 @@
         }
 
         .loader-text {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 800;
             letter-spacing: 0.2em;
             animation: pulse 1.5s ease infinite;
+        }
+
+        @media (min-width: 768px) {
+            .loader-text {
+                font-size: 2rem;
+            }
         }
 
         @keyframes pulse {
@@ -358,9 +391,85 @@
                 transform: scale(1);
             }
         }
+
+        /* Responsive text utilities */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3rem !important;
+                line-height: 1.1 !important;
+            }
+            .hero-subtitle {
+                font-size: 1rem !important;
+            }
+            .section-title {
+                font-size: 2.5rem !important;
+            }
+            .section-subtitle {
+                font-size: 0.75rem !important;
+            }
+            .total-price {
+                font-size: 2.5rem !important;
+            }
+            .nav-brand {
+                font-size: 1.25rem !important;
+            }
+            .py-32 {
+                padding-top: 4rem !important;
+                padding-bottom: 4rem !important;
+            }
+            .mb-20 {
+                margin-bottom: 2.5rem !important;
+            }
+            .gap-12 {
+                gap: 2rem !important;
+            }
+        }
+
+        /* Evitar overflow en elementos específicos */
+        img, video, iframe {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .max-w-7xl {
+            max-width: 100%;
+            width: 100%;
+        }
+        
+        @media (min-width: 1280px) {
+            .max-w-7xl {
+                max-width: 80rem;
+            }
+        }
+        
+        /* Asegurar que los contenedores no causen overflow */
+        .px-6 {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .px-6 {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+            .md\\:px-12 {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+        }
+        
+        /* Sticky card responsive */
+        @media (max-width: 1024px) {
+            .sticky {
+                position: relative;
+                top: 0;
+            }
+        }
     </style>
 </head>
 <body class="bg-black text-white">
+    <div class="main-container">
 
     <!-- Custom cursor -->
     <div class="cursor hidden md:block"></div>
@@ -372,12 +481,12 @@
     </div>
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 py-6 px-6 md:px-12 flex justify-between items-center glass-nav transition-all duration-300">
-        <div class="flex items-center gap-4 cursor-pointer group" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-            <img id="logo" src="" class="h-10 hidden object-contain transition-transform group-hover:scale-105">
-            <span id="nav-brand" class="font-display text-2xl uppercase tracking-tighter bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent"></span>
+    <nav class="fixed w-full z-50 py-4 md:py-6 px-4 md:px-8 lg:px-12 flex justify-between items-center glass-nav transition-all duration-300">
+        <div class="flex items-center gap-3 cursor-pointer group" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+            <img id="logo" src="" class="h-8 md:h-10 hidden object-contain transition-transform group-hover:scale-105">
+            <span id="nav-brand" class="font-display text-xl md:text-2xl uppercase tracking-tighter bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent nav-brand"></span>
         </div>
-        <div class="hidden md:flex items-center gap-10 text-sm font-medium tracking-wide">
+        <div class="hidden md:flex items-center gap-8 lg:gap-10 text-sm font-medium tracking-wide">
             <a href="#" class="hover:opacity-60 transition-all duration-300 relative group">Inicio
                 <span class="absolute -bottom-1 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
             </a>
@@ -388,25 +497,28 @@
                 <span class="absolute -bottom-1 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
             </a>
         </div>
-        <div class="flex items-center gap-4">
-            <button onclick="enviarWhatsApp()" class="hidden md:block btn-primary bg-white text-black px-8 py-3 rounded-full text-sm font-bold uppercase tracking-wider transition-all hover:scale-105 hover:shadow-2xl relative z-10">Solicitar Cita</button>
+        <div class="flex items-center gap-3">
+            <button onclick="enviarWhatsApp()" class="hidden md:block btn-primary bg-white text-black px-6 md:px-8 py-2 md:py-3 rounded-full text-xs md:text-sm font-bold uppercase tracking-wider transition-all hover:scale-105 hover:shadow-2xl relative z-10">Solicitar Cita</button>
             <button onclick="toggleMenu(true)" class="md:hidden flex flex-col gap-1.5 p-2">
-                <div class="w-6 h-0.5 bg-white transition-all"></div>
-                <div class="w-6 h-0.5 bg-white transition-all"></div>
-                <div class="w-6 h-0.5 bg-white transition-all"></div>
+                <div class="w-5 h-0.5 bg-white transition-all"></div>
+                <div class="w-5 h-0.5 bg-white transition-all"></div>
+                <div class="w-5 h-0.5 bg-white transition-all"></div>
             </button>
         </div>
     </nav>
 
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-black/95 backdrop-blur-xl flex flex-col p-8 transform translate-x-full transition-transform duration-500 ease-out">
+    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-black/95 backdrop-blur-xl flex flex-col p-6">
         <div class="flex justify-end">
-            <button onclick="toggleMenu(false)" class="text-4xl text-white hover:opacity-60 transition">&times;</button>
+            <button onclick="toggleMenu(false)" class="text-3xl text-white hover:opacity-60 transition">&times;</button>
         </div>
-        <div class="flex flex-col gap-8 mt-20 text-5xl font-display font-black uppercase tracking-tighter">
+        <div class="flex flex-col gap-6 mt-16 text-3xl font-display font-black uppercase tracking-tighter">
             <a href="#" onclick="toggleMenu(false)" class="hover:pl-4 transition-all">Inicio</a>
             <a href="#proyectos" onclick="toggleMenu(false)" class="hover:pl-4 transition-all">Servicios</a>
             <a href="#servicios" onclick="toggleMenu(false)" class="hover:pl-4 transition-all">Cotizador</a>
+        </div>
+        <div class="mt-auto pb-8">
+            <button onclick="enviarWhatsApp()" class="w-full btn-primary bg-white text-black py-4 rounded-full text-sm font-bold uppercase tracking-wider">Solicitar Cita</button>
         </div>
     </div>
 
@@ -414,22 +526,22 @@
     <section id="hero-section" class="relative min-h-screen flex items-center overflow-hidden">
         <div id="parallax-bg" class="parallax-bg"></div>
         <div class="parallax-overlay"></div>
-        <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
-            <div id="hero-content" class="max-w-5xl" data-aos="fade-up" data-aos-duration="1000">
-                <div class="mb-6">
-                    <span class="inline-block text-sm uppercase tracking-[0.3em] text-white/60 mb-4">Digital Studio</span>
+        <div class="relative z-10 w-full px-4 md:px-8 lg:px-12">
+            <div id="hero-content" class="max-w-4xl mx-auto" data-aos="fade-up" data-aos-duration="1000">
+                <div class="mb-4 md:mb-6">
+                    <span class="inline-block text-xs md:text-sm uppercase tracking-[0.3em] text-white/60">Digital Studio</span>
                 </div>
-                <h1 id="hero-title" class="text-6xl md:text-[7rem] font-display font-black leading-[0.9] uppercase mb-8 gradient-text"></h1>
-                <p id="hero-subtitle" class="text-xl md:text-2xl max-w-2xl mb-12 text-white/80 leading-relaxed"></p>
-                <button id="hero-cta" onclick="document.getElementById('proyectos').scrollIntoView({behavior:'smooth'})" class="btn-primary bg-white text-black px-10 py-5 rounded-full font-bold text-lg uppercase tracking-wider transition-all hover:scale-105 hover:shadow-2xl relative z-10 inline-flex items-center gap-2 group">
+                <h1 id="hero-title" class="hero-title text-5xl md:text-7xl lg:text-[7rem] font-display font-black leading-[1.1] md:leading-[0.9] uppercase mb-6 md:mb-8 gradient-text"></h1>
+                <p id="hero-subtitle" class="hero-subtitle text-base md:text-xl lg:text-2xl max-w-2xl mb-8 md:mb-12 text-white/80 leading-relaxed"></p>
+                <button id="hero-cta" onclick="document.getElementById('proyectos').scrollIntoView({behavior:'smooth'})" class="btn-primary bg-white text-black px-6 md:px-10 py-3 md:py-5 rounded-full font-bold text-sm md:text-lg uppercase tracking-wider transition-all hover:scale-105 hover:shadow-2xl relative z-10 inline-flex items-center gap-2 group">
                     <span></span>
-                    <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
                     </svg>
                 </button>
             </div>
         </div>
-        <div class="scroll-indicator">
+        <div class="scroll-indicator hidden md:block">
             <div class="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
                 <div class="w-1 h-2 bg-white rounded-full mt-2 animate-bounce"></div>
             </div>
@@ -437,38 +549,38 @@
     </section>
 
     <!-- Services Gallery Section -->
-    <section id="proyectos" class="py-32 px-6 md:px-12 relative">
+    <section id="proyectos" class="py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-12 relative">
         <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-20" data-aos="fade-up">
-                <span class="text-sm uppercase tracking-[0.3em] text-white/40">Nuestro trabajo</span>
-                <h2 class="text-5xl md:text-6xl font-display font-black mt-4">Servicios <span class="gradient-text">Premium</span></h2>
-                <div class="w-20 h-px bg-white/20 mx-auto mt-8"></div>
+            <div class="text-center mb-12 md:mb-20" data-aos="fade-up">
+                <span class="section-subtitle text-xs md:text-sm uppercase tracking-[0.3em] text-white/40">Nuestro trabajo</span>
+                <h2 class="section-title text-4xl md:text-5xl lg:text-6xl font-display font-black mt-3 md:mt-4">Servicios <span class="gradient-text">Premium</span></h2>
+                <div class="w-16 md:w-20 h-px bg-white/20 mx-auto mt-6 md:mt-8"></div>
             </div>
-            <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"></div>
         </div>
     </section>
 
     <!-- Quote Builder Section -->
-    <section id="servicios" class="py-32 px-6 md:px-12 bg-gradient-to-b from-black to-zinc-900">
+    <section id="servicios" class="py-16 md:py-24 lg:py-32 px-4 md:px-8 lg:px-12 bg-gradient-to-b from-black to-zinc-900">
         <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-20" data-aos="fade-up">
-                <span class="text-sm uppercase tracking-[0.3em] text-white/40">Construye tu paquete</span>
-                <h2 class="text-5xl md:text-6xl font-display font-black mt-4">Cotizador <span class="gradient-text">Inteligente</span></h2>
-                <div class="w-20 h-px bg-white/20 mx-auto mt-8"></div>
+            <div class="text-center mb-12 md:mb-20" data-aos="fade-up">
+                <span class="section-subtitle text-xs md:text-sm uppercase tracking-[0.3em] text-white/40">Construye tu paquete</span>
+                <h2 class="section-title text-4xl md:text-5xl lg:text-6xl font-display font-black mt-3 md:mt-4">Cotizador <span class="gradient-text">Inteligente</span></h2>
+                <div class="w-16 md:w-20 h-px bg-white/20 mx-auto mt-6 md:mt-8"></div>
             </div>
-            <div class="grid lg:grid-cols-3 gap-12">
+            <div class="grid lg:grid-cols-3 gap-8 md:gap-12">
                 <div id="services-list" class="lg:col-span-2 space-y-4"></div>
-                <div class="sticky top-32" data-aos="fade-left">
-                    <div class="bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl rounded-[2rem] p-8 border border-white/10">
+                <div class="lg:sticky lg:top-32" data-aos="fade-left">
+                    <div class="bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl rounded-2xl md:rounded-[2rem] p-6 md:p-8 border border-white/10">
                         <p class="text-xs font-bold uppercase tracking-wider text-white/40 mb-2">Presupuesto Estimado</p>
-                        <div id="total-price" class="text-6xl font-display font-black mb-8 counter-number">$0.00</div>
-                        <button onclick="enviarWhatsApp()" class="w-full btn-primary bg-white text-black py-5 rounded-xl font-bold text-lg uppercase tracking-wider transition-all hover:scale-105 relative z-10 group">
+                        <div id="total-price" class="total-price text-4xl md:text-5xl lg:text-6xl font-display font-black mb-6 md:mb-8 counter-number">$0.00</div>
+                        <button onclick="enviarWhatsApp()" class="w-full btn-primary bg-white text-black py-4 md:py-5 rounded-xl font-bold text-base md:text-lg uppercase tracking-wider transition-all hover:scale-105 relative z-10 group">
                             Enviar a WhatsApp
-                            <svg class="inline-block w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="inline-block w-4 h-4 md:w-5 md:h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
                             </svg>
                         </button>
-                        <p class="text-xs text-white/30 text-center mt-6">* Personaliza tu selección y recibe la cotización vía WhatsApp</p>
+                        <p class="text-xs text-white/30 text-center mt-5 md:mt-6">* Personaliza tu selección y recibe la cotización vía WhatsApp</p>
                     </div>
                 </div>
             </div>
@@ -476,11 +588,13 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-20 text-center border-t border-white/10">
-        <div class="max-w-7xl mx-auto px-6">
-            <p class="text-white/40 text-xs uppercase tracking-[0.3em]">Najarro X Estudio © 2026 — Digital Craftsmanship</p>
+    <footer class="py-12 md:py-20 text-center border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 md:px-6">
+            <p class="text-white/40 text-xs uppercase tracking-[0.2em] md:tracking-[0.3em]">Najarro X Estudio © 2026 — Digital Craftsmanship</p>
         </div>
     </footer>
+
+    </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
@@ -489,19 +603,14 @@
         let total = 0;
         let seleccionados = [];
 
-        // Custom cursor
+        // Custom cursor (solo en desktop)
         const cursor = document.querySelector('.cursor');
         const cursorFollower = document.querySelector('.cursor-follower');
 
-        if (cursor && cursorFollower) {
+        if (cursor && cursorFollower && window.innerWidth > 768) {
             document.addEventListener('mousemove', (e) => {
                 cursor.style.transform = `translate(${e.clientX - 6}px, ${e.clientY - 6}px)`;
                 cursorFollower.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 20}px)`;
-            });
-
-            document.addEventListener('mouseenter', () => {
-                cursor.style.opacity = '1';
-                cursorFollower.style.opacity = '1';
             });
         }
 
@@ -509,7 +618,7 @@
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
             const parallaxBg = document.getElementById('parallax-bg');
-            if (parallaxBg) {
+            if (parallaxBg && window.innerWidth > 768) {
                 parallaxBg.style.transform = `translateY(${scrolled * 0.3}px) scale(1.1)`;
             }
         });
@@ -529,15 +638,14 @@
         function toggleMenu(open) {
             const menu = document.getElementById('mobile-menu');
             if (open) {
-                menu.classList.remove('translate-x-full');
+                menu.classList.add('open');
                 document.body.style.overflow = 'hidden';
             } else {
-                menu.classList.add('translate-x-full');
+                menu.classList.remove('open');
                 document.body.style.overflow = 'auto';
             }
         }
 
-        // Función mejorada para calcular total y actualizar UI
         function updateTotal(checkbox, precio, nombre, cardElement) {
             const p = parseFloat(precio);
             if(checkbox.checked) {
@@ -559,7 +667,6 @@
 
         async function init() {
             try {
-                // Hide loader after content loads
                 setTimeout(() => {
                     const loader = document.getElementById('loader');
                     if (loader) {
@@ -573,10 +680,6 @@
                 configGlobal = data.config;
 
                 document.getElementById('nav-brand').innerText = configGlobal.nombre_negocio || "Najarro X";
-                
-                // Apply colors
-                const primaryColor = configGlobal.color_primario || '#ffffff';
-                document.documentElement.style.setProperty('--primary-color', primaryColor);
                 
                 if(configGlobal.hero_bg_url) {
                     const heroBg = document.getElementById('parallax-bg');
@@ -594,10 +697,9 @@
                 if(hero) {
                     document.getElementById('hero-title').innerText = hero.Titulo || "TU WEB EN 24 HORAS";
                     document.getElementById('hero-subtitle').innerText = hero.Subtitulo || "Inicia con tu website + CMS para mayor control de tu contenido.";
-                    document.getElementById('hero-cta').innerHTML = (hero.CTA_Texto || "Nuestros Servicios") + ' <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>';
+                    document.getElementById('hero-cta').innerHTML = (hero.CTA_Texto || "Nuestros Servicios") + ' <svg class="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>';
                 }
 
-                // Gallery with enhanced design
                 const gal = document.getElementById('gallery-grid');
                 gal.innerHTML = '';
                 if(data.gallery && data.gallery.length) {
@@ -607,15 +709,14 @@
                                 <img src="${item.URL}" alt="${item.Titulo}" loading="lazy">
                                 <div class="gallery-overlay">
                                     <div>
-                                        <h3 class="font-display font-black text-2xl mb-2">${item.Titulo || ''}</h3>
-                                        <p class="text-white/70 text-sm">${item.Descripcion || ''}</p>
+                                        <h3 class="font-display font-black text-lg md:text-2xl mb-1 md:mb-2">${item.Titulo || ''}</h3>
+                                        <p class="text-white/70 text-xs md:text-sm">${item.Descripcion || ''}</p>
                                     </div>
                                 </div>
                             </div>`;
                     });
                 }
 
-                // Services with FIXED checkboxes
                 const srv = document.getElementById('services-list');
                 srv.innerHTML = '';
                 if(data.services && data.services.length) {
@@ -626,25 +727,24 @@
                             const serviceId = `service_${Date.now()}_${Math.random()}`;
                             
                             srv.innerHTML += `
-                                <div class="service-card rounded-2xl p-6 transition-all reveal" data-service-id="${serviceId}" data-aos="fade-up">
+                                <div class="service-card rounded-xl md:rounded-2xl p-4 md:p-6 transition-all reveal" data-service-id="${serviceId}" data-aos="fade-up">
                                     <div class="flex justify-between items-center">
-                                        <div class="flex items-start gap-4 flex-1">
+                                        <div class="flex items-start gap-3 md:gap-4 flex-1">
                                             <div class="checkbox-wrapper">
                                                 <input type="checkbox" id="${serviceId}" class="service-checkbox" data-precio="${pNum}" data-nombre="${s.Servicio.replace(/'/g, "\\'")}">
                                                 <span class="custom-checkbox"></span>
                                             </div>
-                                            <div class="flex-1">
-                                                <p class="font-display font-bold text-xl mb-1">${s.Servicio}</p>
-                                                <p class="text-white/50 text-sm">${s.Descripcion || 'Servicio profesional de alta calidad'}</p>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="font-display font-bold text-base md:text-xl mb-1 break-words">${s.Servicio}</p>
+                                                <p class="text-white/50 text-xs md:text-sm">${s.Descripcion || 'Servicio profesional de alta calidad'}</p>
                                             </div>
                                         </div>
-                                        <span class="font-display font-bold text-2xl counter-number">$${pNum.toFixed(2)}</span>
+                                        <span class="font-display font-bold text-lg md:text-2xl counter-number flex-shrink-0 ml-2">$${pNum.toFixed(2)}</span>
                                     </div>
                                 </div>`;
                         }
                     });
                     
-                    // Attach event listeners to all checkboxes
                     document.querySelectorAll('.service-checkbox').forEach(checkbox => {
                         const cardElement = checkbox.closest('.service-card');
                         const precio = checkbox.getAttribute('data-precio');
@@ -655,13 +755,10 @@
                             e.stopPropagation();
                         });
                         
-                        // Also make the whole card clickable
                         if(cardElement) {
                             cardElement.addEventListener('click', function(e) {
-                                // Don't trigger if clicking on the checkbox itself
                                 if(e.target !== checkbox && !checkbox.contains(e.target)) {
                                     checkbox.checked = !checkbox.checked;
-                                    // Trigger change event
                                     const changeEvent = new Event('change');
                                     checkbox.dispatchEvent(changeEvent);
                                 }
@@ -673,7 +770,8 @@
                 AOS.init({
                     duration: 800,
                     once: true,
-                    offset: 100
+                    offset: 100,
+                    disable: window.innerWidth < 768 ? true : false
                 });
                 
                 revealOnScroll();
