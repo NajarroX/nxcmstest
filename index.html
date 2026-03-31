@@ -3,165 +3,701 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Najarro X Estudio</title>
+    <title>Najarro X Estudio | Digital Craft</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        :root { --p: #000; --hero-txt: #000; }
-        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; overflow-x: hidden; }
-        .bg-hero { background-size: cover; background-position: center; background-attachment: fixed; }
-        #hero-content { color: var(--hero-txt); }
-        .text-primary { color: var(--p); }
-        .bg-primary { background-color: var(--p); }
-        #mobile-menu { transform: translateX(100%); transition: transform 0.4s ease; }
-        #mobile-menu.open { transform: translateX(0); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: #0a0a0a;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .font-display {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        /* Custom cursor */
+        .cursor {
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.2s ease;
+        }
+
+        .cursor-follower {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.15s ease;
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Hero parallax layers */
+        .parallax-container {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .parallax-bg {
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 120%;
+            height: 120%;
+            background-size: cover;
+            background-position: center;
+            will-change: transform;
+            z-index: 0;
+        }
+
+        .parallax-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 100%);
+            z-index: 1;
+        }
+
+        /* Glass morphism nav */
+        .glass-nav {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Animated gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #fff 0%, #a0a0a0 50%, #fff 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        /* Service cards */
+        .service-card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .service-card.selected {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.4);
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+        }
+
+        /* Custom Checkbox - FIXED */
+        .checkbox-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        .checkbox-wrapper input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .custom-checkbox {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 24px;
+            width: 24px;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+        }
+
+        .checkbox-wrapper:hover .custom-checkbox {
+            border-color: rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .checkbox-wrapper input:checked ~ .custom-checkbox {
+            background: white;
+            border-color: white;
+        }
+
+        .checkbox-wrapper input:checked ~ .custom-checkbox::after {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 3px;
+            width: 6px;
+            height: 12px;
+            border: solid black;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            animation: checkmark 0.2s ease;
+        }
+
+        @keyframes checkmark {
+            0% {
+                opacity: 0;
+                transform: rotate(45deg) scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: rotate(45deg) scale(1);
+            }
+        }
+
+        /* Gallery items */
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 2rem;
+            aspect-ratio: 4/5;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 2rem;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        /* Animated button */
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Mobile menu animation */
+        .mobile-menu-enter {
+            transform: translateX(100%);
+        }
+
+        .mobile-menu-enter-active {
+            transform: translateX(0);
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .mobile-menu-exit {
+            transform: translateX(0);
+        }
+
+        .mobile-menu-exit-active {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* Number counter */
+        .counter-number {
+            font-feature-settings: "tnum";
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Smooth reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Loading animation */
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: #0a0a0a;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease;
+        }
+
+        .loader-text {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 0.2em;
+            animation: pulse 1.5s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Price animation */
+        .price-update {
+            animation: pricePop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes pricePop {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
     </style>
 </head>
-<body class="bg-white">
+<body class="bg-black text-white">
 
-    <nav class="fixed w-full z-50 py-4 px-6 md:px-12 flex justify-between items-center bg-white/90 backdrop-blur-xl border-b border-gray-100">
-        <div class="flex items-center gap-4 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-            <img id="logo" src="" class="h-8 hidden object-contain">
-            <span id="nav-brand" class="font-black text-xl uppercase italic tracking-tighter"></span>
+    <!-- Custom cursor -->
+    <div class="cursor hidden md:block"></div>
+    <div class="cursor-follower hidden md:block"></div>
+
+    <!-- Loader -->
+    <div id="loader" class="loader">
+        <div class="loader-text">NAJARRO X</div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 py-6 px-6 md:px-12 flex justify-between items-center glass-nav transition-all duration-300">
+        <div class="flex items-center gap-4 cursor-pointer group" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+            <img id="logo" src="" class="h-10 hidden object-contain transition-transform group-hover:scale-105">
+            <span id="nav-brand" class="font-display text-2xl uppercase tracking-tighter bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent"></span>
         </div>
-        <div class="hidden md:flex items-center gap-8 text-[10px] font-black uppercase tracking-widest">
-            <a href="#" class="hover:text-primary transition">Inicio</a>
-            <a href="#proyectos" class="hover:text-primary transition">Servicios</a>
-            <a href="#servicios" class="hover:text-primary transition">Cotizador</a>
+        <div class="hidden md:flex items-center gap-10 text-sm font-medium tracking-wide">
+            <a href="#" class="hover:opacity-60 transition-all duration-300 relative group">Inicio
+                <span class="absolute -bottom-1 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a href="#proyectos" class="hover:opacity-60 transition-all duration-300 relative group">Servicios
+                <span class="absolute -bottom-1 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a href="#servicios" class="hover:opacity-60 transition-all duration-300 relative group">Cotizador
+                <span class="absolute -bottom-1 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full"></span>
+            </a>
         </div>
         <div class="flex items-center gap-4">
-            <button onclick="enviarWhatsApp()" class="hidden md:block bg-primary text-white px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">Solicitar Cita</button>
+            <button onclick="enviarWhatsApp()" class="hidden md:block btn-primary bg-white text-black px-8 py-3 rounded-full text-sm font-bold uppercase tracking-wider transition-all hover:scale-105 hover:shadow-2xl relative z-10">Solicitar Cita</button>
             <button onclick="toggleMenu(true)" class="md:hidden flex flex-col gap-1.5 p-2">
-                <div class="w-6 h-0.5 bg-black"></div><div class="w-6 h-0.5 bg-black"></div><div class="w-6 h-0.5 bg-black"></div>
+                <div class="w-6 h-0.5 bg-white transition-all"></div>
+                <div class="w-6 h-0.5 bg-white transition-all"></div>
+                <div class="w-6 h-0.5 bg-white transition-all"></div>
             </button>
         </div>
     </nav>
 
-    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-white flex flex-col p-8">
-        <div class="flex justify-end"><button onclick="toggleMenu(false)" class="text-4xl">&times;</button></div>
-        <div class="flex flex-col gap-8 mt-12 text-4xl font-black italic uppercase tracking-tighter">
-            <a href="#" onclick="toggleMenu(false)">Inicio</a>
-            <a href="#proyectos" onclick="toggleMenu(false)">Servicios</a>
-            <a href="#servicios" onclick="toggleMenu(false)">Cotizador</a>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-black/95 backdrop-blur-xl flex flex-col p-8 transform translate-x-full transition-transform duration-500 ease-out">
+        <div class="flex justify-end">
+            <button onclick="toggleMenu(false)" class="text-4xl text-white hover:opacity-60 transition">&times;</button>
+        </div>
+        <div class="flex flex-col gap-8 mt-20 text-5xl font-display font-black uppercase tracking-tighter">
+            <a href="#" onclick="toggleMenu(false)" class="hover:pl-4 transition-all">Inicio</a>
+            <a href="#proyectos" onclick="toggleMenu(false)" class="hover:pl-4 transition-all">Servicios</a>
+            <a href="#servicios" onclick="toggleMenu(false)" class="hover:pl-4 transition-all">Cotizador</a>
         </div>
     </div>
 
-    <section id="hero-section" class="relative min-h-screen flex items-center px-6 md:px-12 bg-hero">
-        <div id="hero-content" class="max-w-5xl z-10" data-aos="fade-up">
-            <h1 id="hero-title" class="text-5xl md:text-[8rem] font-black leading-[0.85] italic uppercase mb-8"></h1>
-            <p id="hero-subtitle" class="text-lg md:text-3xl max-w-2xl mb-12 opacity-90"></p>
-            <button id="hero-cta" onclick="document.getElementById('proyectos').scrollIntoView()" class="bg-primary text-white px-8 py-5 rounded-2xl font-black text-lg uppercase shadow-2xl"></button>
+    <!-- Hero Section with Parallax -->
+    <section id="hero-section" class="relative min-h-screen flex items-center overflow-hidden">
+        <div id="parallax-bg" class="parallax-bg"></div>
+        <div class="parallax-overlay"></div>
+        <div class="relative z-10 max-w-7xl mx-auto px-6 md:px-12">
+            <div id="hero-content" class="max-w-5xl" data-aos="fade-up" data-aos-duration="1000">
+                <div class="mb-6">
+                    <span class="inline-block text-sm uppercase tracking-[0.3em] text-white/60 mb-4">Digital Studio</span>
+                </div>
+                <h1 id="hero-title" class="text-6xl md:text-[7rem] font-display font-black leading-[0.9] uppercase mb-8 gradient-text"></h1>
+                <p id="hero-subtitle" class="text-xl md:text-2xl max-w-2xl mb-12 text-white/80 leading-relaxed"></p>
+                <button id="hero-cta" onclick="document.getElementById('proyectos').scrollIntoView({behavior:'smooth'})" class="btn-primary bg-white text-black px-10 py-5 rounded-full font-bold text-lg uppercase tracking-wider transition-all hover:scale-105 hover:shadow-2xl relative z-10 inline-flex items-center gap-2 group">
+                    <span></span>
+                    <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                </button>
+            </div>
         </div>
-        <div class="absolute inset-0 bg-black/10"></div>
-    </section>
-
-    <section id="proyectos" class="py-24 px-6 md:px-12 bg-gray-50 rounded-[3rem] -mt-10 relative z-20">
-        <h2 class="text-4xl font-black italic uppercase mb-16">Servicios</h2>
-        <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
-    </section>
-
-    <section id="servicios" class="py-24 px-6 md:px-12 max-w-6xl mx-auto">
-        <h2 class="text-4xl md:text-6xl font-black italic uppercase text-center mb-16">Cotizador</h2>
-        <div class="grid lg:grid-cols-3 gap-12">
-            <div id="services-list" class="lg:col-span-2 space-y-4"></div>
-            <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-gray-100 lg:sticky lg:top-32 h-fit text-center">
-                <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Presupuesto Estimado</p>
-                <div id="total-price" class="text-5xl font-black italic mb-8">$0.00</div>
-                <button onclick="enviarWhatsApp()" class="w-full bg-primary text-white py-6 rounded-2xl font-black text-lg uppercase italic shadow-xl">Enviar a WhatsApp</button>
+        <div class="scroll-indicator">
+            <div class="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+                <div class="w-1 h-2 bg-white rounded-full mt-2 animate-bounce"></div>
             </div>
         </div>
     </section>
 
-    <footer class="py-20 text-center flex flex-col items-center gap-6">
-        <p class="text-black font-black text-[10px] uppercase tracking-[0.5em]">Najarro X Estudio © 2026</p>
+    <!-- Services Gallery Section -->
+    <section id="proyectos" class="py-32 px-6 md:px-12 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20" data-aos="fade-up">
+                <span class="text-sm uppercase tracking-[0.3em] text-white/40">Nuestro trabajo</span>
+                <h2 class="text-5xl md:text-6xl font-display font-black mt-4">Servicios <span class="gradient-text">Premium</span></h2>
+                <div class="w-20 h-px bg-white/20 mx-auto mt-8"></div>
+            </div>
+            <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </div>
+    </section>
+
+    <!-- Quote Builder Section -->
+    <section id="servicios" class="py-32 px-6 md:px-12 bg-gradient-to-b from-black to-zinc-900">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20" data-aos="fade-up">
+                <span class="text-sm uppercase tracking-[0.3em] text-white/40">Construye tu paquete</span>
+                <h2 class="text-5xl md:text-6xl font-display font-black mt-4">Cotizador <span class="gradient-text">Inteligente</span></h2>
+                <div class="w-20 h-px bg-white/20 mx-auto mt-8"></div>
+            </div>
+            <div class="grid lg:grid-cols-3 gap-12">
+                <div id="services-list" class="lg:col-span-2 space-y-4"></div>
+                <div class="sticky top-32" data-aos="fade-left">
+                    <div class="bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl rounded-[2rem] p-8 border border-white/10">
+                        <p class="text-xs font-bold uppercase tracking-wider text-white/40 mb-2">Presupuesto Estimado</p>
+                        <div id="total-price" class="text-6xl font-display font-black mb-8 counter-number">$0.00</div>
+                        <button onclick="enviarWhatsApp()" class="w-full btn-primary bg-white text-black py-5 rounded-xl font-bold text-lg uppercase tracking-wider transition-all hover:scale-105 relative z-10 group">
+                            Enviar a WhatsApp
+                            <svg class="inline-block w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </button>
+                        <p class="text-xs text-white/30 text-center mt-6">* Personaliza tu selección y recibe la cotización vía WhatsApp</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 text-center border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-6">
+            <p class="text-white/40 text-xs uppercase tracking-[0.3em]">Najarro X Estudio © 2026 — Digital Craftsmanship</p>
+        </div>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbx6rNV8O3K_6-TAIvDe1fSNTHbjK7EdFhkxw7oLcupWEFGwPMDToDnJlYZDQitTo2CrEw/exec'; 
+        const API_URL = 'https://script.google.com/macros/s/AKfycbx6rNV8O3K_6-TAIvDe1fSNTHbjK7EdFhkxw7oLcupWEFGwPMDToDnJlYZDQitTo2CrEw/exec';
         let configGlobal = {};
         let total = 0;
         let seleccionados = [];
 
+        // Custom cursor
+        const cursor = document.querySelector('.cursor');
+        const cursorFollower = document.querySelector('.cursor-follower');
+
+        if (cursor && cursorFollower) {
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.transform = `translate(${e.clientX - 6}px, ${e.clientY - 6}px)`;
+                cursorFollower.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 20}px)`;
+            });
+
+            document.addEventListener('mouseenter', () => {
+                cursor.style.opacity = '1';
+                cursorFollower.style.opacity = '1';
+            });
+        }
+
+        // Parallax scroll effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxBg = document.getElementById('parallax-bg');
+            if (parallaxBg) {
+                parallaxBg.style.transform = `translateY(${scrolled * 0.3}px) scale(1.1)`;
+            }
+        });
+
+        // Reveal on scroll
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealOnScroll = () => {
+            revealElements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                    el.classList.add('revealed');
+                }
+            });
+        };
+        window.addEventListener('scroll', revealOnScroll);
+        
         function toggleMenu(open) {
-            document.getElementById('mobile-menu').classList.toggle('open', open);
-            document.body.style.overflow = open ? 'hidden' : 'auto';
+            const menu = document.getElementById('mobile-menu');
+            if (open) {
+                menu.classList.remove('translate-x-full');
+                document.body.style.overflow = 'hidden';
+            } else {
+                menu.classList.add('translate-x-full');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Función mejorada para calcular total y actualizar UI
+        function updateTotal(checkbox, precio, nombre, cardElement) {
+            const p = parseFloat(precio);
+            if(checkbox.checked) {
+                total += p;
+                seleccionados.push(nombre);
+                cardElement.classList.add('selected');
+            } else {
+                total -= p;
+                seleccionados = seleccionados.filter(x => x !== nombre);
+                cardElement.classList.remove('selected');
+            }
+            const totalElem = document.getElementById('total-price');
+            if(totalElem) {
+                totalElem.innerText = `$${Math.max(0, total).toFixed(2)}`;
+                totalElem.classList.add('price-update');
+                setTimeout(() => totalElem.classList.remove('price-update'), 300);
+            }
         }
 
         async function init() {
             try {
+                // Hide loader after content loads
+                setTimeout(() => {
+                    const loader = document.getElementById('loader');
+                    if (loader) {
+                        loader.style.opacity = '0';
+                        setTimeout(() => loader.remove(), 800);
+                    }
+                }, 800);
+
                 const res = await fetch(API_URL + '?t=' + Date.now());
                 const data = await res.json();
                 configGlobal = data.config;
 
                 document.getElementById('nav-brand').innerText = configGlobal.nombre_negocio || "Najarro X";
-                document.documentElement.style.setProperty('--p', configGlobal.color_primario || '#000');
-                document.documentElement.style.setProperty('--hero-txt', configGlobal.hero_text_color || '#000');
-                if(configGlobal.hero_bg_url) document.getElementById('hero-section').style.backgroundImage = `url('${configGlobal.hero_bg_url}')`;
-                if(configGlobal.logo_url) { const l = document.getElementById('logo'); l.src = configGlobal.logo_url; l.classList.remove('hidden'); }
+                
+                // Apply colors
+                const primaryColor = configGlobal.color_primario || '#ffffff';
+                document.documentElement.style.setProperty('--primary-color', primaryColor);
+                
+                if(configGlobal.hero_bg_url) {
+                    const heroBg = document.getElementById('parallax-bg');
+                    heroBg.style.backgroundImage = `url('${configGlobal.hero_bg_url}')`;
+                    heroBg.style.backgroundSize = 'cover';
+                    heroBg.style.backgroundPosition = 'center';
+                }
+                if(configGlobal.logo_url) { 
+                    const l = document.getElementById('logo'); 
+                    l.src = configGlobal.logo_url; 
+                    l.classList.remove('hidden'); 
+                }
 
-                const hero = data.content.find(c => c.Seccion_ID.toLowerCase() === 'hero');
-                document.getElementById('hero-title').innerText = hero.Titulo;
-                document.getElementById('hero-subtitle').innerText = hero.Subtitulo;
-                document.getElementById('hero-cta').innerText = hero.CTA_Texto || "Ver Proyectos";
+                const hero = data.content.find(c => c.Seccion_ID?.toLowerCase() === 'hero');
+                if(hero) {
+                    document.getElementById('hero-title').innerText = hero.Titulo || "TU WEB EN 24 HORAS";
+                    document.getElementById('hero-subtitle').innerText = hero.Subtitulo || "Inicia con tu website + CMS para mayor control de tu contenido.";
+                    document.getElementById('hero-cta').innerHTML = (hero.CTA_Texto || "Nuestros Servicios") + ' <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>';
+                }
 
-                // GALERIA
+                // Gallery with enhanced design
                 const gal = document.getElementById('gallery-grid');
-                data.gallery.forEach(item => {
-                    gal.innerHTML += `<div class="bg-white rounded-[2rem] overflow-hidden shadow-lg"><img src="${item.URL}" class="w-full h-64 object-cover"><div class="p-6"><h3 class="font-black uppercase italic">${item.Titulo}</h3><p class="text-gray-400 text-sm">${item.Descripcion}</p></div></div>`;
-                });
-
-                // SERVICIOS (Aquí es donde estaba el fallo)
-                const srv = document.getElementById('services-list');
-                data.services.forEach(s => {
-                    if(String(s.Activo).toUpperCase() === "TRUE") {
-                        // Limpiamos el valor para que sea un número real
-                        let val = String(s.Precio_Base).replace(/[^0-9.]/g, '');
-                        let pNum = parseFloat(val) || 0;
-                        
-                        srv.innerHTML += `
-                            <label class="flex justify-between items-center p-6 border-2 rounded-[2rem] cursor-pointer hover:border-primary bg-white group">
-                                <div class="flex items-center gap-4">
-                                    <input type="checkbox" class="w-6 h-6 rounded-full" onchange="calc(this, '${pNum}', '${s.Servicio}')">
+                gal.innerHTML = '';
+                if(data.gallery && data.gallery.length) {
+                    data.gallery.forEach(item => {
+                        gal.innerHTML += `
+                            <div class="gallery-item reveal" data-aos="fade-up" data-aos-delay="${Math.random() * 200}">
+                                <img src="${item.URL}" alt="${item.Titulo}" loading="lazy">
+                                <div class="gallery-overlay">
                                     <div>
-                                        <p class="font-black text-xl italic uppercase group-hover:text-primary">${s.Servicio}</p>
-                                        <p class="text-gray-400 text-xs">${s.Descripcion || ''}</p>
+                                        <h3 class="font-display font-black text-2xl mb-2">${item.Titulo || ''}</h3>
+                                        <p class="text-white/70 text-sm">${item.Descripcion || ''}</p>
                                     </div>
                                 </div>
-                                <span class="font-black text-xl italic">$${pNum.toFixed(2)}</span>
-                            </label>`;
-                    }
-                });
-                AOS.init();
-            } catch (e) { console.error(e); }
-        }
+                            </div>`;
+                    });
+                }
 
-        function calc(cb, precio, nombre) {
-            const p = parseFloat(precio);
-            if(cb.checked) {
-                total += p;
-                seleccionados.push(nombre);
-            } else {
-                total -= p;
-                seleccionados = seleccionados.filter(x => x !== nombre);
+                // Services with FIXED checkboxes
+                const srv = document.getElementById('services-list');
+                srv.innerHTML = '';
+                if(data.services && data.services.length) {
+                    data.services.forEach(s => {
+                        if(String(s.Activo).toUpperCase() === "TRUE") {
+                            let val = String(s.Precio_Base).replace(/[^0-9.]/g, '');
+                            let pNum = parseFloat(val) || 0;
+                            const serviceId = `service_${Date.now()}_${Math.random()}`;
+                            
+                            srv.innerHTML += `
+                                <div class="service-card rounded-2xl p-6 transition-all reveal" data-service-id="${serviceId}" data-aos="fade-up">
+                                    <div class="flex justify-between items-center">
+                                        <div class="flex items-start gap-4 flex-1">
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" id="${serviceId}" class="service-checkbox" data-precio="${pNum}" data-nombre="${s.Servicio.replace(/'/g, "\\'")}">
+                                                <span class="custom-checkbox"></span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <p class="font-display font-bold text-xl mb-1">${s.Servicio}</p>
+                                                <p class="text-white/50 text-sm">${s.Descripcion || 'Servicio profesional de alta calidad'}</p>
+                                            </div>
+                                        </div>
+                                        <span class="font-display font-bold text-2xl counter-number">$${pNum.toFixed(2)}</span>
+                                    </div>
+                                </div>`;
+                        }
+                    });
+                    
+                    // Attach event listeners to all checkboxes
+                    document.querySelectorAll('.service-checkbox').forEach(checkbox => {
+                        const cardElement = checkbox.closest('.service-card');
+                        const precio = checkbox.getAttribute('data-precio');
+                        const nombre = checkbox.getAttribute('data-nombre');
+                        
+                        checkbox.addEventListener('change', function(e) {
+                            updateTotal(this, precio, nombre, cardElement);
+                            e.stopPropagation();
+                        });
+                        
+                        // Also make the whole card clickable
+                        if(cardElement) {
+                            cardElement.addEventListener('click', function(e) {
+                                // Don't trigger if clicking on the checkbox itself
+                                if(e.target !== checkbox && !checkbox.contains(e.target)) {
+                                    checkbox.checked = !checkbox.checked;
+                                    // Trigger change event
+                                    const changeEvent = new Event('change');
+                                    checkbox.dispatchEvent(changeEvent);
+                                }
+                            });
+                        }
+                    });
+                }
+                
+                AOS.init({
+                    duration: 800,
+                    once: true,
+                    offset: 100
+                });
+                
+                revealOnScroll();
+            } catch (e) { 
+                console.error(e);
+                const loader = document.getElementById('loader');
+                if(loader) loader.remove();
             }
-            document.getElementById('total-price').innerText = `$${Math.max(0, total).toFixed(2)}`;
         }
 
         function enviarWhatsApp() {
-            const num = configGlobal.whatsapp_tel || "507";
+            const num = configGlobal.whatsapp_tel || "50764614851";
             const marca = configGlobal.nombre_negocio || "Najarro X";
-            let msg = `¡Hola ${marca}! 👋\n\n`;
+            let msg = `✨ *Hola ${marca}* ✨\n\n`;
             if (total > 0) {
-                msg += `Me interesa contratar estos servicios:\n\n`;
-                seleccionados.forEach(s => msg += `✅ *${s}*\n`);
-                msg += `\n*Presupuesto Estimado:* $${total.toFixed(2)}\n\n¿Podemos hablar?`;
+                msg += `Me interesa contratar los siguientes servicios:\n\n`;
+                seleccionados.forEach(s => msg += `✓ *${s}*\n`);
+                msg += `\n💰 *Presupuesto Estimado:* $${total.toFixed(2)}\n\n📌 Quisiera recibir más información y coordinar.`;
             } else {
-                msg += `Me gustaría recibir información sobre sus servicios.`;
+                msg += `Me gustaría recibir información sobre sus servicios y portfolio.`;
             }
             window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, '_blank');
         }
+        
         init();
     </script>
 </body>
