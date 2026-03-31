@@ -112,13 +112,20 @@
             100% { background-position: 200% center; }
         }
 
-        /* Service cards - FIXED visibility */
+        /* Service cards - CON ESPACIADO MEJORADO */
+        .services-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+        
         .service-card {
             background: rgba(255,255,255,0.08);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.15);
             transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
             cursor: pointer;
+            margin-bottom: 0;
         }
 
         .service-card:hover {
@@ -146,11 +153,15 @@
             color: white !important;
         }
 
-        /* Responsive service card */
+        /* Responsive service card con mejor espaciado */
         @media (max-width: 768px) {
+            .services-container {
+                gap: 1rem;
+            }
             .service-card {
-                padding: 1rem !important;
-                margin-bottom: 0.75rem;
+                padding: 1.125rem !important;
+                margin-bottom: 0;
+                border-radius: 1rem !important;
             }
             .service-card .flex {
                 flex-wrap: wrap;
@@ -165,6 +176,24 @@
             }
             .service-card .font-bold.text-xl {
                 font-size: 1rem !important;
+            }
+        }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .services-container {
+                gap: 1.5rem;
+            }
+            .service-card {
+                padding: 1.5rem !important;
+            }
+        }
+        
+        @media (min-width: 1025px) {
+            .services-container {
+                gap: 1.75rem;
+            }
+            .service-card {
+                padding: 1.75rem !important;
             }
         }
 
@@ -349,7 +378,7 @@
             transform: translateY(0);
         }
 
-        /* Forzar visibilidad en móvil - IMPORTANT */
+        /* Forzar visibilidad en móvil */
         @media (max-width: 768px) {
             .reveal {
                 opacity: 1 !important;
@@ -605,7 +634,7 @@
                 <div class="w-16 md:w-20 h-px bg-white/20 mx-auto mt-6 md:mt-8"></div>
             </div>
             <div class="grid lg:grid-cols-3 gap-8 md:gap-12">
-                <div id="services-list" class="lg:col-span-2 space-y-4"></div>
+                <div id="services-list" class="lg:col-span-2 services-container"></div>
                 <div class="lg:sticky lg:top-32" data-aos="fade-left">
                     <div class="bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-xl rounded-2xl md:rounded-[2rem] p-6 md:p-8 border border-white/10">
                         <p class="text-xs font-bold uppercase tracking-wider text-white/40 mb-2">Presupuesto Estimado</p>
