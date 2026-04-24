@@ -2,57 +2,153 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Studio Manager | Najarro X</title>
+    <title>NX Studio CMS | Full Suite</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background: #f9fafb; }
-        .tab-btn.active { border-bottom: 4px solid #000; color: #000; }
+        body { font-family: 'Inter', sans-serif; background: #f3f4f6; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+        .tab-btn { transition: all 0.3s; border-bottom: 4px solid transparent; }
+        .tab-btn.active { border-bottom: 4px solid #8400db; color: #8400db; }
+        .img-preview { width: 100%; height: 120px; object-fit: cover; border-radius: 8px; background: #eee; border: 1px solid #ddd; }
+        input[type="color"] { -webkit-appearance: none; border: none; width: 100%; height: 45px; cursor: pointer; border-radius: 8px; padding: 0; overflow: hidden; }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: none; }
     </style>
 </head>
 <body class="p-6">
-    <div class="max-w-5xl mx-auto">
-        <header class="mb-10 flex justify-between items-end">
-            <div>
-                <h1 class="text-4xl font-black italic uppercase tracking-tighter">Najarro X CMS</h1>
-            </div>
-            <button onclick="saveAll()" id="save-master" class="bg-black text-white px-10 py-4 rounded-2xl font-bold hover:scale-105 transition shadow-xl">GUARDAR CAMBIOS</button>
+    <div class="max-w-6xl mx-auto">
+        <header class="mb-10 flex justify-between items-center">
+            <h1 class="text-3xl font-black uppercase tracking-tighter text-gray-900">NX Studio CMS</h1>
+            <button onclick="saveAll()" id="btn-save" class="bg-black text-white px-8 py-3 font-bold uppercase hover:bg-gray-800 transition shadow-lg">
+                GUARDAR TODO
+            </button>
         </header>
 
-        <div class="flex gap-8 border-b mb-10 text-gray-400 font-bold text-xs uppercase tracking-widest">
-            <button onclick="showTab('general')" class="tab-btn pb-4 active" id="btn-general">General & Hero</button>
-            <button onclick="showTab('galeria')" class="tab-btn pb-4" id="btn-galeria">Portafolio</button>
-            <button onclick="showTab('servicios')" class="tab-btn pb-4" id="btn-servicios">Servicios</button>
+        <div class="flex gap-8 border-b border-gray-200 mb-8 overflow-x-auto">
+            <button onclick="showTab('config')" id="btn-config" class="tab-btn active pb-4 font-bold uppercase text-sm">General</button>
+            <button onclick="showTab('hero')" id="btn-hero" class="tab-btn pb-4 font-bold uppercase text-sm">Hero</button>
+            <button onclick="showTab('about')" id="btn-about" class="tab-btn pb-4 font-bold uppercase text-sm">Nosotros</button>
+            <button onclick="showTab('gallery')" id="btn-gallery" class="tab-btn pb-4 font-bold uppercase text-sm">Galería</button>
+            <button onclick="showTab('services')" id="btn-services" class="tab-btn pb-4 font-bold uppercase text-sm">Cotizador</button>
         </div>
 
-        <form id="master-form">
-            <div id="tab-general" class="tab-content active space-y-6">
-                <div class="bg-white p-8 rounded-[2rem] shadow-sm border space-y-6">
-                    <div class="grid md:grid-cols-3 gap-6">
-                        <input type="text" name="nombre_negocio" placeholder="Nombre Marca" class="p-4 bg-gray-50 rounded-xl border w-full">
-                        <input type="text" name="logo_url" placeholder="URL Logo" class="p-4 bg-gray-50 rounded-xl border w-full">
-                        <input type="color" name="color_primario" class="w-full h-14 p-2 bg-gray-50 rounded-xl border cursor-pointer">
+        <form id="cms-form">
+            <div id="tab-config" class="tab-content active">
+                <div class="grid md:grid-cols-2 gap-6 bg-white p-8 rounded-xl shadow-sm border border-gray-100 mb-6">
+                    <div class="md:col-span-2 border-b pb-2 mb-2"><h3 class="font-black text-sm uppercase text-purple-600">Configuración Global</h3></div>
+                    <div>
+                        <label class="block text-xs font-black uppercase mb-2">Nombre del Negocio</label>
+                        <input type="text" name="nombre_negocio" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg">
                     </div>
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <input type="text" name="hero_bg_url" placeholder="URL Imagen Fondo" class="p-4 bg-gray-50 rounded-xl border w-full">
-                        <input type="color" name="hero_text_color" class="w-full h-14 p-2 bg-gray-50 rounded-xl border cursor-pointer">
-                        <input type="text" name="hero_titulo" placeholder="Título Hero" class="p-4 bg-gray-50 rounded-xl border w-full md:col-span-2">
-                        <textarea name="hero_subtitulo" placeholder="Subtítulo Hero" class="p-4 bg-gray-50 rounded-xl border w-full md:col-span-2"></textarea>
-                        <input type="text" name="hero_cta" placeholder="Texto Botón (CTA)" class="p-4 bg-gray-50 rounded-xl border w-full md:col-span-2">
+                    <div>
+                        <label class="block text-xs font-black uppercase mb-2">Color Primario</label>
+                        <input type="color" name="color_primario">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black uppercase mb-2">WhatsApp (Ej: 50764614851)</label>
+                        <input type="text" name="whatsapp_tel" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black uppercase mb-2">Logo URL</label>
+                        <input type="text" name="logo_url" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black uppercase mb-2">Título Sección Galería</label>
+                        <input type="text" name="titulo_galeria" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg" placeholder="Ej: Mis Proyectos">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black uppercase mb-2">Título Sección Cotizador</label>
+                        <input type="text" name="titulo_cotizador" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg" placeholder="Ej: Presupuesto">
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6 bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                    <div class="md:col-span-2 border-b pb-2 mb-2"><h3 class="font-black text-sm uppercase text-purple-600">Navegación (Menú)</h3></div>
+                    <div>
+                        <label class="block text-xs font-black uppercase mb-2">Link Inicio</label>
+                        <input type="text" name="nav_inicio" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black uppercase mb-2">Link Nosotros</label>
+                        <input type="text" name="nav_nosotros" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black uppercase mb-2">Link Proyectos</label>
+                        <input type="text" name="nav_proyectos" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black uppercase mb-2">Link Cotizador</label>
+                        <input type="text" name="nav_cotizador" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg">
                     </div>
                 </div>
             </div>
 
-            <div id="tab-galeria" class="tab-content">
-                <div id="gallery-list" class="space-y-4"></div>
-                <button type="button" onclick="addItem('gallery')" class="mt-6 w-full border-2 border-dashed py-4 rounded-2xl font-bold text-gray-400 hover:bg-gray-50">+ Añadir Proyecto</button>
+            <div id="tab-hero" class="tab-content">
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-black uppercase mb-2">Título Hero</label>
+                            <input type="text" name="hero_titulo" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black uppercase mb-2">Texto Botón (CTA)</label>
+                            <input type="text" name="hero_cta" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black uppercase mb-2">Subtítulo Hero</label>
+                        <textarea name="hero_subtitulo" rows="3" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black uppercase mb-2">Hero Background URL</label>
+                        <input type="text" name="hero_bg_url" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                    </div>
+                </div>
             </div>
 
-            <div id="tab-servicios" class="tab-content">
+            <div id="tab-about" class="tab-content">
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-black uppercase mb-2">Título Nosotros</label>
+                            <input type="text" name="about_titulo" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black uppercase mb-2">Imagen Nosotros URL</label>
+                            <input type="text" name="about_img" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black uppercase mb-2">Descripción</label>
+                        <textarea name="about_desc" rows="4" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg"></textarea>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-black uppercase mb-2">Email Contacto</label>
+                            <input type="text" name="about_email" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black uppercase mb-2">Link Redes Sociales</label>
+                            <input type="text" name="about_social" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-gallery" class="tab-content">
+                <div id="gallery-list" class="grid md:grid-cols-3 gap-6"></div>
+                <button type="button" onclick="addGalleryItem()" class="mt-8 w-full border-2 border-dashed border-gray-300 p-4 rounded-xl text-gray-500 font-bold hover:border-purple-500 hover:text-purple-500 transition">
+                    + AGREGAR PROYECTO
+                </button>
+            </div>
+
+            <div id="tab-services" class="tab-content">
                 <div id="services-list" class="space-y-4"></div>
-                <button type="button" onclick="addItem('service')" class="mt-6 w-full border-2 border-dashed py-4 rounded-2xl font-bold text-gray-400 hover:bg-gray-50">+ Añadir Servicio</button>
+                <button type="button" onclick="addServiceItem()" class="mt-8 w-full border-2 border-dashed border-gray-300 p-4 rounded-xl text-gray-500 font-bold hover:border-purple-500 hover:text-purple-500 transition">
+                    + AGREGAR SERVICIO
+                </button>
             </div>
         </form>
     </div>
@@ -61,84 +157,129 @@
         const API_URL = 'https://script.google.com/macros/s/AKfycbx6rNV8O3K_6-TAIvDe1fSNTHbjK7EdFhkxw7oLcupWEFGwPMDToDnJlYZDQitTo2CrEw/exec';
 
         async function load() {
-            const res = await fetch(API_URL + '?t=' + Date.now());
-            const data = await res.json();
-            const form = document.getElementById('master-form');
-            
-            form.nombre_negocio.value = data.config.nombre_negocio || '';
-            form.logo_url.value = data.config.logo_url || '';
-            form.color_primario.value = data.config.color_primario || '#000000';
-            form.hero_bg_url.value = data.config.hero_bg_url || '';
-            form.hero_text_color.value = data.config.hero_text_color || '#000000';
+            try {
+                const res = await fetch(API_URL);
+                const data = await res.json();
+                const f = document.getElementById('cms-form');
+                
+                f.nombre_negocio.value = data.config.nombre_negocio || '';
+                f.color_primario.value = data.config.color_primario || '#8400db';
+                f.whatsapp_tel.value = data.config.whatsapp_tel || '';
+                f.logo_url.value = data.config.logo_url || '';
+                f.titulo_galeria.value = data.config.titulo_galeria || '';
+                f.titulo_cotizador.value = data.config.titulo_cotizador || '';
+                f.nav_inicio.value = data.config.nav_inicio || '';
+                f.nav_nosotros.value = data.config.nav_nosotros || '';
+                f.nav_proyectos.value = data.config.nav_proyectos || '';
+                f.nav_cotizador.value = data.config.nav_cotizador || '';
 
-            const hero = data.content.find(c => c.Seccion_ID.toLowerCase() === 'hero');
-            form.hero_titulo.value = hero.Titulo || '';
-            form.hero_subtitulo.value = hero.Subtitulo || '';
-            form.hero_cta.value = hero.CTA_Texto || '';
+                const hero = data.content.find(c => c.Seccion_ID === 'hero');
+                f.hero_titulo.value = hero.Titulo || '';
+                f.hero_subtitulo.value = hero.Subtitulo || '';
+                f.hero_cta.value = hero.CTA_Texto || '';
+                f.hero_bg_url.value = data.config.hero_bg_url || '';
 
-            data.gallery.forEach(g => addItem('gallery', g));
-            data.services.forEach(s => addItem('service', s));
+                f.about_titulo.value = data.about.titulo || '';
+                f.about_desc.value = data.about.descripcion || '';
+                f.about_img.value = data.about.imagen_url || '';
+                f.about_email.value = data.about.email || '';
+                f.about_social.value = data.about.redes || '';
+
+                data.gallery.forEach(item => addGalleryItem(item));
+                data.services.forEach(item => addServiceItem(item));
+            } catch (e) { console.error(e); }
         }
 
-        function addItem(type, data = {}) {
-            const container = type === 'gallery' ? document.getElementById('gallery-list') : document.getElementById('services-list');
+        function addGalleryItem(item = {}) {
+            const container = document.getElementById('gallery-list');
             const div = document.createElement('div');
-            div.className = "bg-white p-6 rounded-2xl border shadow-sm flex flex-col md:flex-row gap-4 items-center";
-            
-            if(type === 'gallery') {
-                div.innerHTML = `
-                    <input type="text" placeholder="URL Imagen" value="${data.URL||''}" class="g-url p-3 bg-gray-50 rounded-lg border w-full">
-                    <input type="text" placeholder="Título Proyecto" value="${data.Titulo||''}" class="g-titulo p-3 bg-gray-50 rounded-lg border w-full font-bold">
-                    <input type="text" placeholder="Descripción" value="${data.Descripcion||''}" class="g-desc p-3 bg-gray-50 rounded-lg border w-full text-sm">
-                    <button type="button" onclick="this.parentElement.remove()" class="text-red-500 font-bold px-4">Eliminar</button>`;
-            } else {
-                div.innerHTML = `
-                    <input type="text" placeholder="Servicio" value="${data.Servicio||''}" class="s-nombre p-3 bg-gray-50 rounded-lg border w-full font-bold">
-                    <input type="number" placeholder="Precio" value="${data.Precio_Base||''}" class="s-precio p-3 bg-gray-50 rounded-lg border w-32">
-                    <input type="text" placeholder="Descripción" value="${data.Descripcion||''}" class="s-desc p-3 bg-gray-50 rounded-lg border w-full">
-                    <select class="s-activo p-3 bg-gray-50 rounded-lg border">
-                        <option value="TRUE" ${String(data.Activo).toUpperCase()==='TRUE'?'selected':''}>Activo</option>
-                        <option value="FALSE" ${String(data.Activo).toUpperCase()==='FALSE'?'selected':''}>Oculto</option>
+            div.className = "bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative";
+            div.innerHTML = `
+                <button type="button" onclick="this.parentElement.remove()" class="absolute -top-2 -right-2 bg-red-500 text-white w-6 h-6 rounded-full text-xs">×</button>
+                <img src="${item.URL || ''}" class="img-preview mb-4" onerror="this.src='https://via.placeholder.com/150'">
+                <input type="text" placeholder="URL Imagen" class="g-url w-full p-2 text-xs border rounded mb-2" value="${item.URL || ''}">
+                <input type="text" placeholder="Título" class="g-titulo w-full p-2 text-sm font-bold border rounded mb-2" value="${item.Titulo || ''}">
+                <textarea placeholder="Descripción corta" class="g-desc w-full p-2 text-xs border rounded" rows="2">${item.Descripcion || ''}</textarea>
+            `;
+            container.appendChild(div);
+        }
+
+        function addServiceItem(item = {}) {
+            const container = document.getElementById('services-list');
+            const div = document.createElement('div');
+            div.className = "bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-wrap gap-4 items-start relative";
+            div.innerHTML = `
+                <button type="button" onclick="this.parentElement.remove()" class="absolute top-2 right-2 text-gray-400 hover:text-red-500 text-xs font-bold">ELIMINAR</button>
+                <div class="flex-1 min-w-[200px]">
+                    <label class="block text-[10px] font-black uppercase mb-1">Nombre Servicio</label>
+                    <input type="text" class="s-nombre w-full p-2 border rounded" value="${item.Servicio || ''}">
+                </div>
+                <div class="w-32">
+                    <label class="block text-[10px] font-black uppercase mb-1">Precio</label>
+                    <input type="number" class="s-precio w-full p-2 border rounded" value="${item.Precio_Base || 0}">
+                </div>
+                <div class="flex-1 min-w-[250px]">
+                    <label class="block text-[10px] font-black uppercase mb-1">Descripción</label>
+                    <input type="text" class="s-desc w-full p-2 border rounded" value="${item.Descripcion || ''}">
+                </div>
+                <div class="w-24">
+                    <label class="block text-[10px] font-black uppercase mb-1">Activo</label>
+                    <select class="s-activo w-full p-2 border rounded">
+                        <option value="TRUE" ${item.Activo == 'TRUE' ? 'selected' : ''}>SÍ</option>
+                        <option value="FALSE" ${item.Activo == 'FALSE' ? 'selected' : ''}>NO</option>
                     </select>
-                    <button type="button" onclick="this.parentElement.remove()" class="text-red-500 font-bold px-4">Eliminar</button>`;
-            }
+                </div>
+            `;
             container.appendChild(div);
         }
 
         async function saveAll() {
-            const btn = document.getElementById('save-master');
+            const btn = document.getElementById('btn-save');
             btn.innerText = "GUARDANDO...";
-            const form = document.getElementById('master-form');
+            btn.disabled = true;
 
+            const f = document.getElementById('cms-form');
             const payload = {
-                action: 'updateFull',
                 config: {
-                    nombre_negocio: form.nombre_negocio.value,
-                    logo_url: form.logo_url.value,
-                    color_primario: form.color_primario.value,
-                    hero_bg_url: form.hero_bg_url.value,
-                    hero_text_color: form.hero_text_color.value
+                    nombre_negocio: f.nombre_negocio.value,
+                    color_primario: f.color_primario.value,
+                    whatsapp_tel: f.whatsapp_tel.value,
+                    logo_url: f.logo_url.value,
+                    titulo_galeria: f.titulo_galeria.value,
+                    titulo_cotizador: f.titulo_cotizador.value,
+                    nav_inicio: f.nav_inicio.value,
+                    nav_nosotros: f.nav_nosotros.value,
+                    nav_proyectos: f.nav_proyectos.value,
+                    nav_cotizador: f.nav_cotizador.value,
+                    hero_bg_url: f.hero_bg_url.value
                 },
-                hero: {
-                    titulo: form.hero_titulo.value,
-                    subtitulo: form.hero_subtitulo.value,
-                    cta: form.hero_cta.value
+                hero: { titulo: f.hero_titulo.value, subtitulo: f.hero_subtitulo.value, cta: f.hero_cta.value },
+                about: { 
+                    titulo: f.about_titulo.value, descripcion: f.about_desc.value, imagen_url: f.about_img.value, 
+                    email: f.about_email.value, redes: f.about_social.value 
                 },
                 gallery: Array.from(document.querySelectorAll('#gallery-list > div')).map(div => ({
-                    URL: div.querySelector('.g-url').value,
-                    Titulo: div.querySelector('.g-titulo').value,
-                    Descripcion: div.querySelector('.g-desc').value
+                    URL: div.querySelector('.g-url').value, Titulo: div.querySelector('.g-titulo').value, Descripcion: div.querySelector('.g-desc').value
                 })),
                 services: Array.from(document.querySelectorAll('#services-list > div')).map(div => ({
-                    Servicio: div.querySelector('.s-nombre').value,
-                    Precio_Base: div.querySelector('.s-precio').value,
-                    Descripcion: div.querySelector('.s-desc').value,
-                    Activo: div.querySelector('.s-activo').value
+                    Servicio: div.querySelector('.s-nombre').value, Precio_Base: div.querySelector('.s-precio').value, 
+                    Descripcion: div.querySelector('.s-desc').value, Activo: div.querySelector('.s-activo').value
                 }))
             };
 
-            await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-            setTimeout(() => { btn.innerText = "¡GUARDADO!"; setTimeout(()=> btn.innerText="GUARDAR CAMBIOS", 2000); }, 1500);
+            try {
+                await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+                btn.innerText = "¡TODO GUARDADO!";
+                btn.classList.replace('bg-black', 'bg-green-600');
+            } catch (e) {
+                alert("Error al guardar");
+            } finally {
+                setTimeout(() => {
+                    btn.innerText = "GUARDAR TODO";
+                    btn.disabled = false;
+                    btn.classList.replace('bg-green-600', 'bg-black');
+                }, 2000);
+            }
         }
 
         function showTab(id) {
